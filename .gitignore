@@ -1,5 +1,6 @@
 # Backend ignore
 venv/
+.venv/
 .env
 *.pyc
 *.pyo
