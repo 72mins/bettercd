@@ -1,0 +1,12 @@
+[project]
+name = "cicd"
+version = "0.1.0"
+description = "No-Code graphical CI/CD pipeline builder"
+readme = "README.md"
+requires-python = ">=3.12"
+authors = ["72mins"]
+dependencies = [
+    "django>=5.1.6",
+    "psycopg2>=2.9.10",
+    "python-dotenv>=1.0.1",
+]
