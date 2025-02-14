@@ -2,7 +2,6 @@ import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-import { cn } from '@/lib/utils';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -11,6 +10,7 @@ import { useLoginUser } from '@/services/auth/login';
 import { useAuthStore } from '@/store/auth';
 import { setTokens } from '@/lib/localStorage';
 import { setHeaderToken } from '@/axios';
+import { cn } from '@/lib/utils';
 
 const formSchema = z.object({
     email: z.string().email({ message: 'Invalid email address' }),
@@ -43,9 +43,6 @@ export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRe
                     refresh: res.refresh,
                 });
             },
-            onError: (err) => {
-                console.error(err);
-            },
         });
     };
 
@@ -75,7 +72,7 @@ export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRe
                             </span>
                         </div>
                         <Form {...form}>
-                            <form className="grid" onSubmit={form.handleSubmit(onSubmit)}>
+                            <form className="grid gap-1" onSubmit={form.handleSubmit(onSubmit)}>
                                 <FormField
                                     control={form.control}
                                     name="email"
@@ -83,12 +80,7 @@ export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRe
                                         <FormItem className="mb-6">
                                             <FormLabel>E-Mail</FormLabel>
                                             <FormControl>
-                                                <Input
-                                                    //error={emailError}
-                                                    autoComplete="on"
-                                                    placeholder="user@appon.net"
-                                                    {...field}
-                                                />
+                                                <Input autoComplete="on" placeholder="user@mail.com" {...field} />
                                             </FormControl>
                                             <FormMessage />
                                         </FormItem>
@@ -103,19 +95,14 @@ export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRe
                                                 <FormLabel>Password</FormLabel>
                                             </div>
                                             <FormControl>
-                                                <Input
-                                                    //error={passwordError}
-                                                    autoComplete="on"
-                                                    type="password"
-                                                    {...field}
-                                                />
+                                                <Input autoComplete="on" type="password" {...field} />
                                             </FormControl>
                                             <FormMessage />
                                         </FormItem>
                                     )}
                                 />
                                 <Button loading={isPending} type="submit" className="w-full">
-                                    Log In
+                                    Login
                                 </Button>
                             </form>
                         </Form>
