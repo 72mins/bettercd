@@ -4,7 +4,7 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView,
 )
 
-from rest_framework.parsers import FormParser
+from rest_framework.parsers import FormParser, MultiPartParser
 from apps.base_app.models import CustomUser
 from rest_framework import status
 
@@ -16,7 +16,7 @@ from apps.base_app.serializers.login import (
 
 class CustomTokenPairView(TokenObtainPairView):
     serializer_class = CustomTokenPairSerializer
-    parser_classes = [FormParser]
+    parser_classes = [FormParser, MultiPartParser]
 
     def post(self, request, *args, **kwargs):
         email = request.data["email"]
@@ -49,4 +49,4 @@ class CustomTokenPairView(TokenObtainPairView):
 
 class CustomRefreshView(TokenRefreshView):
     serializer_class = CustomRefreshSerializer
-    parser_classes = [FormParser]
+    parser_classes = [FormParser, MultiPartParser]
