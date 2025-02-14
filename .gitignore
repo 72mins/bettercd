@@ -6,6 +6,7 @@ venv/
 *.pyo
 *.pyd
 __pycache__/
+static
 
 # Frontend ignore
 logs
