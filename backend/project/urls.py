@@ -7,16 +7,17 @@ from drf_spectacular.views import (
     SpectacularRedocView,
 )
 
-
 from django.urls import path, include
 
 from apps.base_app import urls as base_app_urls
+from apps.pipeline_app import urls as pipeline_app_urls
 from apps.base_app.views.login import CustomRefreshView, CustomTokenPairView
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     # Apps
     path("", include(base_app_urls)),
+    path("", include(pipeline_app_urls)),
     # Auth
     path("api/token/refresh/", CustomRefreshView.as_view(), name="token_refresh"),
     path("api/token/", CustomTokenPairView.as_view(), name="my_token_obtain_pair"),

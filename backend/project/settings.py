@@ -33,6 +33,7 @@ INSTALLED_APPS = [
     "drf_spectacular",
     # Local
     "apps.base_app",
+    "apps.pipeline_app",
 ]
 
 MIDDLEWARE = [
@@ -92,7 +93,7 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 SPECTACULAR_SETTINGS = {
-    "TITLE": "CICD API",
+    "TITLE": "BetterCD API",
     "DESCRIPTION": "No-Code graphical CI/CD pipeline builder",
     "VERSION": "0.1.0",
     "SERVE_INCLUDE_SCHEMA": False,
