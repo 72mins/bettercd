@@ -5,6 +5,8 @@ import LoginRoute from './app/auth/login-route';
 import PrivateRoute from './app/auth/private-route';
 import { Toaster } from './components/ui/sonner';
 import DashboardPage from './app/dashboard/dashboard';
+import PipelinePage from './app/pipelines/pipelines';
+import PipelineStudio from './app/pipelines/pipeline-studio';
 
 function App() {
     return (
@@ -20,7 +22,8 @@ function App() {
                         <Route index element={<Navigate to="/dashboard/ci-cd/pipelines" replace />} />
                         <Route path="ci-cd">
                             <Route index element={<Navigate to="/dashboard/ci-cd/pipelines" replace />} />
-                            <Route path="pipelines" element={<div>Pipelines</div>} />
+                            <Route path="pipelines" element={<PipelinePage />} />
+                            <Route path="pipelines/:pipelineID/studio" element={<PipelineStudio />} />
                             <Route path="build-history" element={<div>Build History</div>} />
                         </Route>
                         <Route path="git" element={<div>Git Integration</div>} />

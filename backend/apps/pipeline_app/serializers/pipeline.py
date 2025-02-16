@@ -4,6 +4,8 @@ from apps.pipeline_app.models.pipeline import Pipeline
 
 
 class PipelineSerializer(serializers.ModelSerializer):
+    user = serializers.HiddenField(default=serializers.CurrentUserDefault())
+
     class Meta:
         model = Pipeline
-        fields = "__all__"
+        fields = ["id", "name", "description", "user"]
