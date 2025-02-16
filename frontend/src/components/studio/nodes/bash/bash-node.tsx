@@ -1,4 +1,7 @@
+import { useState } from 'react';
+
 import { Handle, NodeProps, Position } from '@xyflow/react';
+import { SquareTerminal } from 'lucide-react';
 
 import BaseNode from '../base-node';
 import { Button } from '@/components/ui/button';
@@ -8,11 +11,17 @@ import CodeEditor from './editor';
 const BashNode = (props: NodeProps) => {
     const { id } = props;
 
+    const [value, setValue] = useState<string>('#!/bin/bash\n\n# Write your bash script here...');
+
     return (
         <>
-            <BaseNode title="Custom Bash Script" description="Run a custom bash script">
+            <BaseNode
+                title="Custom Bash Script"
+                description="Checkout from VCS, run unit tests and send message to Slack"
+                icon={<SquareTerminal className="text-muted-foreground" />}
+            >
                 <Sheet>
-                    <SheetTrigger>
+                    <SheetTrigger asChild className="w-full">
                         <div className="flex items-center justify-center">
                             <Button className="text-blue-500" variant="link">
                                 Edit Bash Script
@@ -22,10 +31,15 @@ const BashNode = (props: NodeProps) => {
                     <SheetContent>
                         <SheetHeader>
                             <SheetTitle>Edit Bash Script</SheetTitle>
-                            <SheetDescription>Write your custom bash script here</SheetDescription>
+                            <SheetDescription>Edit the custom bash script running for this stage</SheetDescription>
                         </SheetHeader>
                         <div className="px-4">
-                            <CodeEditor />
+                            <CodeEditor value={value} setValue={setValue} />
+                            <div className="flex justify-end">
+                                <Button className="mt-4 min-w-36" variant="default">
+                                    Save Changes
+                                </Button>
+                            </div>
                         </div>
                     </SheetContent>
                 </Sheet>
