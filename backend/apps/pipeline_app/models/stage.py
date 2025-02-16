@@ -13,6 +13,7 @@ class Stage(models.Model):
     name = models.CharField(max_length=100)
     order = models.IntegerField()
     stage_type = models.CharField(max_length=10, choices=STAGE_TYPE, default="CUSTOM")
+    script = models.FileField(null=True, blank=True)
 
     def __str__(self):
         return f"# {self.order} {self.name} - {self.pipeline}"
