@@ -5,7 +5,8 @@
 @custom-variant dark (&:is(.dark *));
 
 * {
-    font-family: 'Source Sans Pro', sans-serif;
+    font-family: 'Inter', sans-serif;
+    font-optical-sizing: auto;
 }
 
 :root {

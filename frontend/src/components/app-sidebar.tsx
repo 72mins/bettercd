@@ -1,14 +1,12 @@
 import * as React from 'react';
 import {
     AudioWaveform,
-    BookOpen,
     Command,
     Frame,
     GalleryVerticalEnd,
     GitBranch,
     Map,
     PieChart,
-    Settings2,
     SquareTerminal,
 } from 'lucide-react';
 
