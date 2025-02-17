@@ -5,23 +5,48 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('pipeline_app', '0001_initial'),
+        ("pipeline_app", "0001_initial"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Stage',
+            name="Stage",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=100)),
-                ('order', models.IntegerField()),
-                ('stage_type', models.CharField(choices=[('CUSTOM', 'Custom'), ('DEPLOY', 'Deploy')], default='CUSTOM', max_length=10)),
-                ('pipeline', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='pipeline_app.pipeline')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=100)),
+                ("order", models.IntegerField()),
+                (
+                    "stage_type",
+                    models.CharField(
+                        choices=[("CUSTOM", "Custom"), ("DEPLOY", "Deploy")],
+                        default="CUSTOM",
+                        max_length=10,
+                    ),
+                ),
+                (
+                    "pipeline",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="pipeline_app.pipeline",
+                    ),
+                ),
             ],
             options={
-                'indexes': [models.Index(fields=['pipeline', 'order'], name='pipeline_ap_pipelin_ecb776_idx')],
+                "indexes": [
+                    models.Index(
+                        fields=["pipeline", "order"],
+                        name="pipeline_ap_pipelin_ecb776_idx",
+                    )
+                ],
             },
         ),
     ]

@@ -35,7 +35,7 @@ export default function DashboardPage() {
                     </div>
                 </header>
                 <div className="flex flex-1 flex-col gap-4 p-6 pt-0">
-                  <Outlet />
+                    <Outlet />
                 </div>
             </SidebarInset>
         </SidebarProvider>

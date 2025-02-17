@@ -3,7 +3,7 @@ import { Pagination } from '@/consts/types/auth';
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 
 interface Pipeline {
-	id: number;
+    id: number;
     name: string;
     description: string;
 }
