@@ -11,6 +11,7 @@ STAGE_TYPE = (
 class Stage(models.Model):
     pipeline = models.ForeignKey(Pipeline, on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
+    description = models.CharField(max_length=255, null=True, blank=True)
     order = models.IntegerField()
     stage_type = models.CharField(max_length=10, choices=STAGE_TYPE, default="CUSTOM")
     script = models.FileField(null=True, blank=True)

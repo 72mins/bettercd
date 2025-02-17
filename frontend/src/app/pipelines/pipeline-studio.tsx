@@ -1,7 +1,25 @@
+import { useParams } from 'react-router';
+
 import Studio from '@/components/studio/studio';
+import { useFetchPipelineStages } from '@/services/pipelines/stages';
 
 const PipelineStudio = () => {
-    return <Studio />;
+    const { pipelineID = 0 } = useParams();
+
+    const { data, isPending } = useFetchPipelineStages(+pipelineID);
+
+    // TODO: Refactor the pending and no data found logic to something better
+
+    if (isPending) {
+        return <div>Loading...</div>;
+    }
+
+    // NOTE: This is temporary to satisfy TypeScript
+    if (!data) {
+        return <div>No data found</div>;
+    }
+
+    return <Studio data={data} />;
 };
 
 export default PipelineStudio;

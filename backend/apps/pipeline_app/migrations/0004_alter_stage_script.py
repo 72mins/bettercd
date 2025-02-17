@@ -4,15 +4,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('pipeline_app', '0003_stage_script'),
+        ("pipeline_app", "0003_stage_script"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='stage',
-            name='script',
-            field=models.FileField(blank=True, null=True, upload_to=''),
+            model_name="stage",
+            name="script",
+            field=models.FileField(blank=True, null=True, upload_to=""),
         ),
     ]

@@ -15,7 +15,7 @@ const CodeEditor = ({ value, setValue }: { value: string; setValue: (val: string
             theme={dracula}
             value={value}
             onChange={onChange}
-            height="500px"
+            height={`${window.innerHeight * 0.75}px`}
             extensions={[StreamLanguage.define(shell)]}
         />
     );
