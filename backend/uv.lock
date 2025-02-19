@@ -48,7 +48,7 @@ wheels = [
 ]
 
 [[package]]
-name = "cicd"
+name = bettercd"
 version = "0.1.0"
 source = { virtual = "." }
 dependencies = [

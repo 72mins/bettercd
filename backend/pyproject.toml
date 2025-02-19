@@ -1,5 +1,5 @@
 [project]
-name = "cicd"
+name = "bettercd"
 version = "0.1.0"
 description = "No-Code graphical CI/CD pipeline builder"
 readme = "README.md"
