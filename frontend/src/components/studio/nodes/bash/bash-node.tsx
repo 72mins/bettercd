@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import { NodeProps } from '@xyflow/react';
-import { SquareTerminal } from 'lucide-react';
+import { FilePenLine, SquareTerminal } from 'lucide-react';
 import { toast } from 'sonner';
 
 import BaseNode from '../base-node';
@@ -51,6 +51,7 @@ const BashNode = (props: BashNodeProps) => {
                     <SheetTrigger asChild className="w-full">
                         <div className="flex items-center justify-center">
                             <Button disabled={scriptPending} className="text-blue-500" variant="link">
+                                <FilePenLine />
                                 Edit Bash Script
                             </Button>
                         </div>
