@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     "apps.base_app",
     "apps.pipeline_app",
     "apps.docker_app",
+    "apps.integrations_app",
 ]
 
 MIDDLEWARE = [
