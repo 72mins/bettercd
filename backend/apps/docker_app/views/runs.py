@@ -3,6 +3,8 @@ from rest_framework.permissions import IsAuthenticated
 
 import os
 from django.db import transaction
+import time
+from google.api_core import exceptions
 
 from apps.docker_app.serializers.runs import RunPipelineSerializer
 from apps.base_app.permissions import IsOwner
@@ -57,14 +59,49 @@ class RunPipelineView(generics.CreateAPIView):
                 Stage.objects.filter(pipeline=pipeline).order_by("order").first()
             )
 
+            stages = [
+                {
+                    "stage_name": "setup",
+                    "script_value": """
+                        #!/bin/bash
+                        echo "Setting up environment..."
+                    """,
+                },
+                {
+                    "stage_name": "build",
+                    "script_value": """
+                        #!/bin/bash
+                        echo "Building application..."
+                    """,
+                },
+                {
+                    "stage_name": "test",
+                    "script_value": """
+                        #!/bin/bash
+                        echo "Running tests..."
+                    """,
+                },
+            ]
+
+            env_vars = [EnvVar(name="STAGE_COUNT", value=str(len(stages)))]
+
+            for i, stage in enumerate(stages):
+                env_vars.extend(
+                    [
+                        EnvVar(
+                            name=f"STAGE_{i}_NAME",
+                            value=stage["stage_name"],
+                        ),
+                        EnvVar(
+                            name=f"STAGE_{i}_SCRIPT",
+                            value=stage["script_value"],
+                        ),
+                    ]
+                )
+
             container = Container(
                 image=BASE_IMAGE,
-                env=[
-                    EnvVar(
-                        name="SCRIPT_CONTENT",
-                        value=first_pipeline_stage.get_script_content(),
-                    )
-                ],
+                env=env_vars,
                 resources=ResourceRequirements(
                     limits={
                         "memory": "512Mi",
@@ -78,6 +115,7 @@ class RunPipelineView(generics.CreateAPIView):
                     template=TaskTemplate(
                         containers=[container],
                         timeout={"seconds": 600},
+                        max_retries=1,
                     )
                 )
             )
@@ -85,7 +123,7 @@ class RunPipelineView(generics.CreateAPIView):
             job_client = GoogleJobsClient()
             log_client = GoogleLogsClient()
 
-            job_name = "test-job-16"
+            job_name = "test-job-20"
 
             job_client.create_job(job=job, job_name=job_name)
             job_client.run_job(job_name=job_name)

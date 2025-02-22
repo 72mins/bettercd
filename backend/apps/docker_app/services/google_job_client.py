@@ -1,7 +1,7 @@
 import os
 
 from google.cloud import run_v2
-from google.cloud.run_v2 import RunJobRequest, DeleteJobRequest
+from google.cloud.run_v2 import RunJobRequest, DeleteJobRequest, GetJobRequest
 
 from apps.docker_app.utils.google_credentials import get_google_credentials
 
@@ -14,6 +14,15 @@ class GoogleJobsClient:
         storage_credentials = get_google_credentials()
 
         self.client = run_v2.JobsClient(credentials=storage_credentials)
+
+    def get_job(self, job_name: str):
+        requst = GetJobRequest(
+            name=f"projects/{GCLOUD_ID}/locations/{GCLOUD_REGION}/jobs/{job_name}"
+        )
+
+        job = self.client.get_job(request=requst)
+
+        return job
 
     def create_job(self, job, job_name: str):
         created_job = self.client.create_job(

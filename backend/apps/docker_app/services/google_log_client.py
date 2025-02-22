@@ -30,7 +30,7 @@ class GoogleLogsClient:
         for entry in _stream_job_logs(
             logging_client=self.client, log_filter=log_filter
         ):
-            if "Job completed" in entry.payload:
+            if "All stages completed successfully" in entry.payload:
                 break
 
             timestamp = entry.timestamp.isoformat()
