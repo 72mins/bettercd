@@ -1,12 +1,25 @@
 import os
 
 from google.cloud import run_v2
-from google.cloud.run_v2 import RunJobRequest, DeleteJobRequest, GetJobRequest
+from google.cloud.run_v2 import (
+    RunJobRequest,
+    DeleteJobRequest,
+    GetJobRequest,
+    Job,
+    Container,
+    ResourceRequirements,
+    ExecutionTemplate,
+    TaskTemplate,
+    EnvVar,
+)
 
 from apps.docker_app.utils.google_credentials import get_google_credentials
 
+
 GCLOUD_ID = os.environ.get("GCLOUD_PROJECT_ID")
 GCLOUD_REGION = os.environ.get("GCLOUD_REGION")
+
+BASE_IMAGE = f"{GCLOUD_REGION}-docker.pkg.dev/{GCLOUD_ID}/script-repo/base-image:latest"
 
 
 class GoogleJobsClient:
@@ -24,7 +37,38 @@ class GoogleJobsClient:
 
         return job
 
-    def create_job(self, job, job_name: str):
+    def create_job(self, stages: list, job_name: str):
+        env_vars = [EnvVar(name="STAGE_COUNT", value=str(len(stages)))]
+
+        for i, stage in enumerate(stages):
+            env_vars.extend(
+                [
+                    EnvVar(name=f"STAGE_{i}_NAME", value=stage.name),
+                    EnvVar(name=f"STAGE_{i}_SCRIPT", value=stage.get_script_content()),
+                ]
+            )
+
+        container = Container(
+            image=BASE_IMAGE,
+            env=env_vars,
+            resources=ResourceRequirements(
+                limits={
+                    "memory": "512Mi",
+                    "cpu": "1",
+                }
+            ),
+        )
+
+        job = Job(
+            template=ExecutionTemplate(
+                template=TaskTemplate(
+                    containers=[container],
+                    timeout={"seconds": 600},
+                    max_retries=1,
+                )
+            )
+        )
+
         created_job = self.client.create_job(
             parent=f"projects/{GCLOUD_ID}/locations/{GCLOUD_REGION}",
             job=job,

@@ -1,21 +1,17 @@
 #!/bin/bash
 set -e
 
-# Function to run a single stage
 run_stage() {
     local stage_name=$1
     local script_content=$2
 
     echo "Starting stage: ${stage_name}"
 
-    # Create stage directory
     mkdir -p "/app/scripts/${stage_name}"
 
-    # Write the script content to a file
     echo "$script_content" > "/app/scripts/${stage_name}/run.sh"
     chmod +x "/app/scripts/${stage_name}/run.sh"
 
-    # Execute the script
     if ! "/app/scripts/${stage_name}/run.sh"; then
         echo "Stage ${stage_name} failed with exit code $?"
         return 1
@@ -25,7 +21,6 @@ run_stage() {
     return 0
 }
 
-# Get number of stages from STAGE_COUNT
 if [ -z "$STAGE_COUNT" ]; then
     echo "Error: STAGE_COUNT environment variable not set"
     exit 1
