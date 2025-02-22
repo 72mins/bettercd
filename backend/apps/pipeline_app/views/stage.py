@@ -41,14 +41,7 @@ class StageViewSet(viewsets.ModelViewSet):
         try:
             stage = Stage.objects.get(pk=pk, pipeline__user=request.user)
 
-            cache_key = f"script_value_{pk}"
-            cached_value = cache.get(cache_key)
-
-            if cached_value:
-                return Response({"script_value": cached_value})
-
-            script_content = stage.script.read().decode("utf-8")
-            cache.set(cache_key, script_content, timeout=3600)
+            script_content = stage.get_script_content()
 
             return Response({"script_value": script_content})
         except (Stage.DoesNotExist, Exception):
