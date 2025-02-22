@@ -32,6 +32,7 @@ dependencies = [
     { name = "django" },
     { name = "django-cors-headers" },
     { name = "django-crum" },
+    { name = "django-env-validator" },
     { name = "django-filter" },
     { name = "django-storages" },
     { name = "djangorestframework" },
@@ -51,6 +52,7 @@ requires-dist = [
     { name = "django", specifier = ">=5.1.6" },
     { name = "django-cors-headers", specifier = ">=4.7.0" },
     { name = "django-crum", specifier = ">=0.7.9" },
+    { name = "django-env-validator", specifier = ">=1.0.1" },
     { name = "django-filter", specifier = ">=24.3" },
     { name = "django-storages", specifier = ">=1.14.5" },
     { name = "djangorestframework", specifier = ">=3.15.2" },
@@ -194,6 +196,18 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/34/1d/c56588f67130aeef8828e47535e8551337d2ae02f91f1414da61bc5e49fb/django-crum-0.7.9.tar.gz", hash = "sha256:65e9bc0f070a663fafc4d9e357f45fd4e6f01838b20a9e2fb7670f5706754288", size = 5168 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/cd/f9/8fad70a3bd011a6be7c5c6067278f006a25341eb39d901fbda307e26804c/django_crum-0.7.9-py2.py3-none-any.whl", hash = "sha256:037cc8b822975bb1d41cd24269b59a512cc77448fadc3f34ab9a17b229b4b471", size = 4714 },
+]
+
+[[package]]
+name = "django-env-validator"
+version = "1.0.1"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "django" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/69/12/0d9f7d12e89065fbcce970c780769c5a01e7edcbb8c4ea32cfb5dabec209/django_env_validator-1.0.1.tar.gz", hash = "sha256:b757d3302714a6ab2afa99fa59adf3090329ef8ad0419514217e8e4804803984", size = 3941 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/48/53/2792790566b7193602b24dfe9c74c68188af580d2d2cd07a1f3c818852d8/django_env_validator-1.0.1-py3-none-any.whl", hash = "sha256:50867c515ab6df8c297eb0888e26741d962214911b8d5e0b57aefcb5e61ddaa8", size = 4750 },
 ]
 
 [[package]]

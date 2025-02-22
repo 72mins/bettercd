@@ -31,6 +31,7 @@ INSTALLED_APPS = [
     "rest_framework_simplejwt",
     "corsheaders",
     "drf_spectacular",
+    "django_env_validator",
     # Local
     "apps.base_app",
     "apps.pipeline_app",
@@ -137,6 +138,18 @@ SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=15),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=3),
     "ROTATE_REFRESH_TOKENS": False,
+}
+
+ENV_VALIDATOR_RULES = {
+    "DB_NAME": {"required": True},
+    "DB_USER": {"required": True},
+    "DB_PASSWORD": {"required": True},
+    "CLOUDFLARE_R2_ACCESS_KEY": {"required": True},
+    "CLOUDFLARE_R2_SECRET_KEY": {"required": True},
+    "CLOUDFLARE_R2_ENDPOINT_URL": {"required": True},
+    "CLOUDFLARE_R2_BUCKET_NAME": {"required": True},
+    "GCLOUD_PROJECT_ID": {"required": True},
+    "GCLOUD_REGION": {"required": True},
 }
 
 AUTH_USER_MODEL = "base_app.CustomUser"
