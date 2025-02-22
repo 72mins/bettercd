@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     # Local
     "apps.base_app",
     "apps.pipeline_app",
+    "apps.docker_app",
 ]
 
 MIDDLEWARE = [

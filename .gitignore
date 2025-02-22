@@ -7,6 +7,7 @@ venv/
 *.pyd
 __pycache__/
 static
+service-account.json
 
 # Frontend ignore
 logs

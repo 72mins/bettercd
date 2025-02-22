@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.cache import cache
 
 from apps.pipeline_app.models.pipeline import Pipeline
 
@@ -21,3 +22,15 @@ class Stage(models.Model):
 
     class Meta:
         indexes = [models.Index(fields=["pipeline", "order"])]
+
+    def get_script_content(self):
+        cache_key = f"script_value_{self.pk}"
+        cached_value = cache.get(cache_key)
+
+        if cached_value:
+            return cached_value
+
+        script_content = self.script.read().decode("utf-8")
+        cache.set(cache_key, script_content, timeout=3600)
+
+        return script_content
