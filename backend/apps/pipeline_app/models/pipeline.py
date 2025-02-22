@@ -1,4 +1,5 @@
 from django.db import models
+import uuid
 
 from apps.base_app.models import CustomUser
 
@@ -21,7 +22,8 @@ class Pipeline(models.Model):
         job_client = GoogleJobsClient()
         log_client = GoogleLogsClient()
 
-        job_name = f"pipeline-job-{self.id}"
+        unique_id = uuid.uuid4()
+        job_name = f"pipeline-job-{self.id}-{unique_id}"
 
         stages = self.stage_set.all().order_by("order")
 
