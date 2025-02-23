@@ -7,13 +7,13 @@ from apps.integrations_app.models.github import GithubProfile
 from apps.integrations_app.serializers.github import GithubProfileSerializer
 from apps.integrations_app.services.github import GithubClient
 
-github_client = GithubClient()
-
 
 class GithubAuthURL(generics.GenericAPIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
+        github_client = GithubClient()
+
         return Response(
             {"auth_url": github_client.get_auth_url()}, status=status.HTTP_200_OK
         )
@@ -25,6 +25,8 @@ class GithubCallback(generics.GenericAPIView):
 
     def post(self, request):
         code = request.data.get("code", None)
+
+        github_client = GithubClient()
 
         if not code:
             return Response(

@@ -7,10 +7,6 @@ from apps.docker_app.services.google_job_client import GoogleJobsClient
 from apps.docker_app.services.google_log_client import GoogleLogsClient
 from apps.integrations_app.services.github import GithubClient
 
-job_client = GoogleJobsClient()
-log_client = GoogleLogsClient()
-github_client = GithubClient()
-
 
 class Pipeline(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
@@ -24,6 +20,10 @@ class Pipeline(models.Model):
         indexes = [models.Index(fields=["user"])]
 
     def run_pipeline(self, github_project_id):
+        job_client = GoogleJobsClient()
+        log_client = GoogleLogsClient()
+        github_client = GithubClient()
+
         github_profile = self.user.githubprofile
 
         repo_details = github_client.get_repo_details(

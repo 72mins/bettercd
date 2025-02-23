@@ -10,6 +10,7 @@ class GithubClient:
 
     def get_auth_url(self) -> str:
         """Auth URL is used to redirect the user to the GitHub OAuth page"""
+
         auth_url = (
             f"https://github.com/login/oauth/authorize"
             f"?client_id={self.client_id}"
@@ -50,6 +51,7 @@ class GithubClient:
 
     def get_repo_details(self, access_token: str, repo_id: str):
         """Get repository details including clone URL and default branch"""
+
         response = requests.get(
             f"https://api.github.com/repositories/{repo_id}",
             headers={
