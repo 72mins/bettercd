@@ -49,6 +49,20 @@ class GithubClient:
 
         return user_data
 
+    def get_user_repos(self, access_token: str):
+        response = requests.get(
+            "https://api.github.com/user/repos",
+            headers={
+                "Authorization": f"token {access_token}",
+                "Accept": "application/json",
+            },
+        )
+
+        if response.status_code != 200:
+            return None
+
+        return response.json()
+
     def get_repo_details(self, access_token: str, repo_id: str):
         """Get repository details including clone URL and default branch"""
 
