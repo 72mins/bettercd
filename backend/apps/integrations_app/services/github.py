@@ -9,6 +9,7 @@ class GithubClient:
         self.callback_url = os.getenv("GITHUB_CALLBACK_URL")
 
     def get_auth_url(self) -> str:
+        """Auth URL is used to redirect the user to the GitHub OAuth page"""
         auth_url = (
             f"https://github.com/login/oauth/authorize"
             f"?client_id={self.client_id}"
@@ -46,3 +47,18 @@ class GithubClient:
         user_data = response.json()
 
         return user_data
+
+    def get_repo_details(self, access_token: str, repo_id: str):
+        """Get repository details including clone URL and default branch"""
+        response = requests.get(
+            f"https://api.github.com/repositories/{repo_id}",
+            headers={
+                "Authorization": f"token {access_token}",
+                "Accept": "application/json",
+            },
+        )
+
+        if response.status_code != 200:
+            return None
+
+        return response.json()

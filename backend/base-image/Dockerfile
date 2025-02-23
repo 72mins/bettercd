@@ -18,4 +18,3 @@ RUN chmod +x /app/entrypoint.sh
 RUN chmod 777 /app/scripts /app/shared
 
 ENTRYPOINT ["/app/entrypoint.sh"]
-
