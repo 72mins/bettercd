@@ -5,6 +5,11 @@ from apps.base_app.models import CustomUser
 
 from apps.docker_app.services.google_job_client import GoogleJobsClient
 from apps.docker_app.services.google_log_client import GoogleLogsClient
+from apps.integrations_app.services.github import GithubClient
+
+job_client = GoogleJobsClient()
+log_client = GoogleLogsClient()
+github_client = GithubClient()
 
 
 class Pipeline(models.Model):
@@ -18,16 +23,22 @@ class Pipeline(models.Model):
     class Meta:
         indexes = [models.Index(fields=["user"])]
 
-    def run_pipeline(self):
-        job_client = GoogleJobsClient()
-        log_client = GoogleLogsClient()
+    def run_pipeline(self, github_project_id):
+        github_profile = self.user.githubprofile
+
+        repo_details = github_client.get_repo_details(
+            github_profile.access_token, github_project_id
+        )
+
+        if not repo_details:
+            raise ValueError("Repository not found or access denied.")
 
         unique_id = uuid.uuid4()
         job_name = f"pipeline-job-{self.id}-{unique_id}"
 
         stages = self.stage_set.all().order_by("order")
 
-        job_client.create_job(stages, job_name)
+        job_client.create_job(stages, repo_details, job_name, github_profile)
         job_client.run_job(job_name)
 
         filter = f"resource.type=cloud_run_job AND resource.labels.job_name={job_name} AND severity=DEFAULT"

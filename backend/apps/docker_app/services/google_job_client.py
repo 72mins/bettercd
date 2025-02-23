@@ -37,8 +37,15 @@ class GoogleJobsClient:
 
         return job
 
-    def create_job(self, stages: list, job_name: str):
-        env_vars = [EnvVar(name="STAGE_COUNT", value=str(len(stages)))]
+    def create_job(
+        self, stages: list, repo_details: dict, job_name: str, github_profile
+    ):
+        env_vars = [
+            EnvVar(name="STAGE_COUNT", value=str(len(stages))),
+            EnvVar(name="GITHUB_TOKEN", value=github_profile.access_token),
+            EnvVar(name="GITHUB_REPO_URL", value=repo_details["clone_url"]),
+            EnvVar(name="GITHUB_REPO_BRANCH", value=repo_details["default_branch"]),
+        ]
 
         for i, stage in enumerate(stages):
             env_vars.extend(
@@ -64,7 +71,7 @@ class GoogleJobsClient:
                 template=TaskTemplate(
                     containers=[container],
                     timeout={"seconds": 600},
-                    max_retries=1,
+                    max_retries=0,
                 )
             )
         )
