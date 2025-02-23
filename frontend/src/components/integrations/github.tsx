@@ -6,7 +6,6 @@ import { useEffect, useState } from 'react';
 
 const GithubConnect = () => {
     const [githubProfile, setGithubProfile] = useState(null);
-    const [repositories, setRepositories] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
@@ -20,19 +19,6 @@ const GithubConnect = () => {
         }
     };
 
-    const fetchRepositories = async () => {
-        try {
-            setLoading(true);
-            const response = await axiosInstance.get('/github/repositories/');
-            setRepositories(response.data);
-        } catch (err) {
-            setError('Failed to fetch repositories');
-            console.error(err);
-        } finally {
-            setLoading(false);
-        }
-    };
-
     const handleGithubCallback = async (code) => {
         try {
             setLoading(true);
@@ -41,7 +27,6 @@ const GithubConnect = () => {
             // Clear the code from the URL
             window.history.replaceState({}, document.title, window.location.pathname);
             // Fetch repositories after successful connection
-            fetchRepositories();
         } catch (err) {
             setError('Failed to connect GitHub account');
             console.error(err);
@@ -80,24 +65,6 @@ const GithubConnect = () => {
             ) : (
                 <div>
                     <h2 className="text-xl font-bold mb-4">Connected as {githubProfile.github_username}</h2>
-
-                    <h3 className="text-lg font-semibold mb-2">Your Repositories</h3>
-                    <div className="grid gap-4">
-                        {repositories.map((repo) => (
-                            <div key={repo.id} className="border p-4 rounded hover:bg-gray-50">
-                                <h4 className="font-medium">{repo.name}</h4>
-                                <p className="text-gray-600">{repo.description}</p>
-                                <a
-                                    href={repo.html_url}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="text-blue-500 hover:underline"
-                                >
-                                    View on GitHub
-                                </a>
-                            </div>
-                        ))}
-                    </div>
                 </div>
             )}
         </div>
