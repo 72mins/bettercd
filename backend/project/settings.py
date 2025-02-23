@@ -151,6 +151,9 @@ ENV_VALIDATOR_RULES = {
     "CLOUDFLARE_R2_BUCKET_NAME": {"required": True},
     "GCLOUD_PROJECT_ID": {"required": True},
     "GCLOUD_REGION": {"required": True},
+    "GITHUB_CLIENT_ID": {"required": True},
+    "GITHUB_CLIENT_SECRET": {"required": True},
+    "GITHUB_CALLBACK_URL": {"required": True},
 }
 
 AUTH_USER_MODEL = "base_app.CustomUser"
