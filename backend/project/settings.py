@@ -150,6 +150,7 @@ ENV_VALIDATOR_RULES = {
     "CLOUDFLARE_R2_ENDPOINT_URL": {"required": True},
     "CLOUDFLARE_R2_BUCKET_NAME": {"required": True},
     "GCLOUD_PROJECT_ID": {"required": True},
+    "GCLOUD_LOG_SUBSCRIPTION_ID": {"required": True},
     "GCLOUD_REGION": {"required": True},
     "GITHUB_CLIENT_ID": {"required": True},
     "GITHUB_CLIENT_SECRET": {"required": True},
