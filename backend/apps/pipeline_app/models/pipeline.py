@@ -39,10 +39,13 @@ class Pipeline(models.Model):
         unique_id = uuid.uuid4()
         job_name = f"pipeline-job-{self.id}-{unique_id}"
 
+        variables = self.environmentvariable_set.all()
         stages = self.stage_set.all().order_by("order")
 
         try:
-            job_client.create_job(stages, repo_details, job_name, github_profile)
+            job_client.create_job(
+                stages, variables, repo_details, job_name, github_profile
+            )
             job_client.run_job(job_name)
 
             sub_client.listen_for_logs(job_name=job_name)
