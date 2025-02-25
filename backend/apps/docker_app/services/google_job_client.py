@@ -38,7 +38,12 @@ class GoogleJobsClient:
         return job
 
     def create_job(
-        self, stages: list, repo_details: dict, job_name: str, github_profile
+        self,
+        stages: list,
+        variables: list,
+        repo_details: dict,
+        job_name: str,
+        github_profile,
     ):
         env_vars = [
             EnvVar(name="STAGE_COUNT", value=str(len(stages))),
@@ -55,6 +60,9 @@ class GoogleJobsClient:
                 ]
             )
 
+        for var in variables:
+            env_vars.append(EnvVar(name=var.name, value=var.value))
+
         container = Container(
             image=BASE_IMAGE,
             env=env_vars,
@@ -70,7 +78,7 @@ class GoogleJobsClient:
             template=ExecutionTemplate(
                 template=TaskTemplate(
                     containers=[container],
-                    timeout={"seconds": 600},
+                    timeout={"seconds": 1200},
                     max_retries=0,
                 )
             )
