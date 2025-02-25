@@ -17,32 +17,48 @@ class StageViewSet(viewsets.ModelViewSet):
     parser_classes = [MultiPartParser, FormParser]
 
     def get_queryset(self):
-        return Stage.objects.filter(pipeline__user=self.request.user)
+        return (
+            Stage.objects.selected_related("pipeline")
+            .filter(pipeline__user=self.request.user)
+            .order_by("order")
+        )
 
     @action(detail=True, methods=["get"])
     def pipeline_stages(self, request, pk=None):
         try:
             pipeline = Pipeline.objects.get(pk=pk, user=request.user)
-            stages = Stage.objects.filter(pipeline=pipeline).order_by("order")
+            stages = pipeline.stage_set.all().order_by("order")
 
             serializer = self.get_serializer(stages, many=True)
 
             return Response(serializer.data)
-        except (Pipeline.DoesNotExist, Stage.DoesNotExist, Exception):
+        except Pipeline.DoesNotExist:
             return Response(
-                {"error": "Pipeline or Stage not found"},
+                {"error": "Pipeline not found"},
                 status=status.HTTP_404_NOT_FOUND,
+            )
+        except Exception as e:
+            return Response(
+                {"error": f"Error retrieving stages: {str(e)}"},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR,
             )
 
     @action(detail=True, methods=["get"])
     def script_value(self, request, pk=None):
         try:
-            stage = Stage.objects.get(pk=pk, pipeline__user=request.user)
+            stage = Stage.objects.select_related("pipeline").get(
+                pk=pk, pipeline__user=request.user
+            )
 
             script_content = stage.get_script_content()
 
             return Response({"script_value": script_content})
-        except (Stage.DoesNotExist, Exception):
+        except Stage.DoesNotExist:
             return Response(
                 {"error": "Stage not found"}, status=status.HTTP_404_NOT_FOUND
+            )
+        except Exception as e:
+            return Response(
+                {"error": f"Error retrieving script content: {str(e)}"},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR,
             )

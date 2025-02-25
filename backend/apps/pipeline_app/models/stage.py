@@ -27,10 +27,13 @@ class Stage(models.Model):
         cache_key = f"script_value_{self.pk}"
         cached_value = cache.get(cache_key)
 
-        if cached_value:
+        if cached_value is not None:
             return cached_value
 
-        script_content = self.script.read().decode("utf-8")
-        cache.set(cache_key, script_content, timeout=3600)
+        try:
+            script_content = self.script.read().decode("utf-8")
+            cache.set(cache_key, script_content, timeout=3600)
 
-        return script_content
+            return script_content
+        except (AttributeError, UnicodeDecodeError, IOError):
+            return ""

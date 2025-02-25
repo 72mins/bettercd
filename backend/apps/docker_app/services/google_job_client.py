@@ -16,21 +16,18 @@ from google.cloud.run_v2 import (
 from apps.docker_app.utils.google_credentials import get_google_credentials
 
 
-GCLOUD_ID = os.environ.get("GCLOUD_PROJECT_ID")
-GCLOUD_REGION = os.environ.get("GCLOUD_REGION")
-
-BASE_IMAGE = f"{GCLOUD_REGION}-docker.pkg.dev/{GCLOUD_ID}/script-repo/base-image:latest"
-
-
 class GoogleJobsClient:
     def __init__(self):
         storage_credentials = get_google_credentials()
-
         self.client = run_v2.JobsClient(credentials=storage_credentials)
+
+        self.project_id = os.environ.get("GCLOUD_PROJECT_ID")
+        self.region = os.environ.get("GCLOUD_REGION")
+        self.image = f"{self.region}-docker.pkg.dev/{self.project_id}/script-repo/base-image:latest"
 
     def get_job(self, job_name: str):
         requst = GetJobRequest(
-            name=f"projects/{GCLOUD_ID}/locations/{GCLOUD_REGION}/jobs/{job_name}"
+            name=f"projects/{self.project_id}/locations/{self.region}/jobs/{job_name}"
         )
 
         job = self.client.get_job(request=requst)
@@ -64,7 +61,7 @@ class GoogleJobsClient:
             env_vars.append(EnvVar(name=var.name, value=var.value))
 
         container = Container(
-            image=BASE_IMAGE,
+            image=self.image,
             env=env_vars,
             resources=ResourceRequirements(
                 limits={
@@ -85,7 +82,7 @@ class GoogleJobsClient:
         )
 
         created_job = self.client.create_job(
-            parent=f"projects/{GCLOUD_ID}/locations/{GCLOUD_REGION}",
+            parent=f"projects/{self.project_id}/locations/{self.region}",
             job=job,
             job_id=job_name,
         )
@@ -94,7 +91,7 @@ class GoogleJobsClient:
 
     def run_job(self, job_name: str):
         request = RunJobRequest(
-            name=f"projects/{GCLOUD_ID}/locations/{GCLOUD_REGION}/jobs/{job_name}"
+            name=f"projects/{self.project_id}/locations/{self.region}/jobs/{job_name}"
         )
 
         ran_job = self.client.run_job(request=request)
@@ -103,7 +100,7 @@ class GoogleJobsClient:
 
     def delete_job(self, job_name: str):
         request = DeleteJobRequest(
-            name=f"projects/{GCLOUD_ID}/locations/{GCLOUD_REGION}/jobs/{job_name}"
+            name=f"projects/{self.project_id}/locations/{self.region}/jobs/{job_name}"
         )
 
         deleted_job = self.client.delete_job(request=request)
