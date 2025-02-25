@@ -46,8 +46,8 @@ class Pipeline(models.Model):
             job_client.create_job(
                 stages, variables, repo_details, job_name, github_profile
             )
-            job_client.run_job(job_name)
 
+            job_client.run_job(job_name=job_name)
             sub_client.listen_for_logs(job_name=job_name)
         finally:
             job_client.delete_job(job_name=job_name)
