@@ -46,15 +46,14 @@ const BashNode = (props: BashNodeProps) => {
                 description="Checkout from VCS, run unit tests and send message to Slack"
                 order={order}
                 icon={<SquareTerminal className="text-muted-foreground" />}
+                stageType="Custom"
             >
                 <Sheet>
-                    <SheetTrigger asChild className="w-full">
-                        <div className="flex items-center justify-center">
-                            <Button disabled={scriptPending} className="text-blue-500" variant="link">
-                                <FilePenLine />
-                                Edit Bash Script
-                            </Button>
-                        </div>
+                    <SheetTrigger asChild>
+                        <Button disabled={scriptPending} className="text-blue-500" variant="link">
+                            <FilePenLine />
+                            Edit Bash Script
+                        </Button>
                     </SheetTrigger>
                     <SheetContent>
                         <SheetHeader>

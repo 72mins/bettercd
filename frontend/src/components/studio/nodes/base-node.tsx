@@ -7,12 +7,14 @@ const BaseNode = ({
     description,
     icon,
     order,
+    stageType,
     children,
 }: {
     title: string | unknown;
     description: string;
     icon: React.ReactNode;
     order: number;
+    stageType: string;
     children: React.ReactNode;
 }) => {
     return (
@@ -22,16 +24,16 @@ const BaseNode = ({
             </Badge>
             <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                    {icon}
+                    <div className="w-6 h-6">{icon}</div>
                     <p className="text-sm truncate max-w-60">{typeof title === 'string' ? title : ''}</p>
                 </div>
                 <Badge className="bg-sidebar text-neutral-500" variant="outline">
-                    Custom
+                    {stageType}
                 </Badge>
             </div>
             <hr className="border-gray-100 border-t-1 mt-2" />
             <p className="mt-2 text-xs text-muted-foreground">{description}</p>
-            <div className="mt-8">{children}</div>
+            <div className="mt-8 flex items-center justify-center">{children}</div>
             {order !== 1 && <Handle type="target" position={Position.Left} />}
             <Handle type="source" position={Position.Right} />
         </div>
