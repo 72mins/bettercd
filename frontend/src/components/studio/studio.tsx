@@ -3,6 +3,7 @@ import { useMemo } from 'react';
 import { ReactFlow, Background, BackgroundVariant } from '@xyflow/react';
 
 import BashNode from './nodes/bash/bash-node';
+import GithubNode from './nodes/github/github-node';
 import { Stage } from '@/services/pipelines/stages';
 import { calculateEdges, calculatePosition, getNodeType } from './utils';
 
@@ -10,6 +11,7 @@ import '@xyflow/react/dist/style.css';
 
 const NODE_TYPES = {
     bash: BashNode,
+    github: GithubNode,
 };
 
 const Studio = ({ data }: { data: Stage[] }) => {
@@ -23,6 +25,13 @@ const Studio = ({ data }: { data: Stage[] }) => {
             data: { label: stage.name, order: stage.order, script: stage.script },
         }));
     }, [data]);
+
+    nodes.push({
+        id: 'github',
+        position: { x: -300, y: 350 },
+        type: 'github',
+        data: { label: 'Github Checkout', order: 0, script: null },
+    });
 
     return (
         <div className="w-full h-full">
