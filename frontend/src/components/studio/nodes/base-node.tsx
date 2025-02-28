@@ -1,6 +1,7 @@
 import { Handle, Position } from '@xyflow/react';
 
 import { Badge } from '@/components/ui/badge';
+import { Separator } from '@/components/ui/separator';
 
 const BaseNode = ({
     title,
@@ -18,7 +19,7 @@ const BaseNode = ({
     children: React.ReactNode;
 }) => {
     return (
-        <div className="border border-gray-200 rounded-md bg-white w-96 p-3 relative">
+        <div className="border border-border rounded-md bg-background w-96 p-3 relative">
             <Badge variant="outline" className="text-xs bg-sidebar text-muted-foreground absolute left-0 top-[-28px]">
                 Stage #{order}
             </Badge>
@@ -31,7 +32,7 @@ const BaseNode = ({
                     {stageType}
                 </Badge>
             </div>
-            <hr className="border-gray-100 border-t-1 mt-2" />
+            <Separator className="mt-2" />
             <p className="mt-2 text-xs text-muted-foreground">{description}</p>
             <div className="mt-8 flex items-center justify-center">{children}</div>
             {order !== 1 && <Handle type="target" position={Position.Left} />}

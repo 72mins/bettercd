@@ -1,5 +1,16 @@
 import { useNavigate } from 'react-router';
-import { BadgeCheck, Bell, ChevronsUpDown, CreditCard, LogOut, Sparkles } from 'lucide-react';
+import {
+    BadgeCheck,
+    Bell,
+    ChevronsUpDown,
+    CreditCard,
+    LogOut,
+    MonitorCog,
+    Moon,
+    Sparkles,
+    Sun,
+    Palette,
+} from 'lucide-react';
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
@@ -8,11 +19,16 @@ import {
     DropdownMenuGroup,
     DropdownMenuItem,
     DropdownMenuLabel,
+    DropdownMenuPortal,
     DropdownMenuSeparator,
+    DropdownMenuSub,
+    DropdownMenuSubContent,
+    DropdownMenuSubTrigger,
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from '@/components/ui/sidebar';
 import { useAuthStore } from '@/store/auth';
+import { useTheme } from './theme/theme-provider';
 
 export function NavUser({
     user,
@@ -24,6 +40,7 @@ export function NavUser({
     };
 }) {
     const { isMobile } = useSidebar();
+    const { setTheme } = useTheme();
 
     const navigate = useNavigate();
     const logout = useAuthStore((state) => state.logout);
@@ -89,6 +106,28 @@ export function NavUser({
                                 <CreditCard />
                                 Billing
                             </DropdownMenuItem>
+                            <DropdownMenuSub>
+                                <DropdownMenuSubTrigger>
+                                    <Palette />
+                                    Theme
+                                </DropdownMenuSubTrigger>
+                                <DropdownMenuPortal>
+                                    <DropdownMenuSubContent>
+                                        <DropdownMenuItem onClick={() => setTheme('light')}>
+                                            <Sun />
+                                            Light
+                                        </DropdownMenuItem>
+                                        <DropdownMenuItem onClick={() => setTheme('dark')}>
+                                            <Moon />
+                                            Dark
+                                        </DropdownMenuItem>
+                                        <DropdownMenuItem onClick={() => setTheme('system')}>
+                                            <MonitorCog />
+                                            System
+                                        </DropdownMenuItem>
+                                    </DropdownMenuSubContent>
+                                </DropdownMenuPortal>
+                            </DropdownMenuSub>
                             <DropdownMenuItem>
                                 <Bell />
                                 Notifications

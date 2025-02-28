@@ -7,6 +7,7 @@ import { toast } from 'sonner';
 import axios from 'axios';
 
 import App from './App.tsx';
+import { ThemeProvider } from './components/theme/theme-provider.tsx';
 
 const queryClient = new QueryClient({
     defaultOptions: {
@@ -23,10 +24,12 @@ const queryClient = new QueryClient({
 });
 
 createRoot(document.getElementById('root')!).render(
-    <QueryClientProvider client={queryClient}>
-        <BrowserRouter>
-            <App />
-            <ReactQueryDevtools initialIsOpen={false} />
-        </BrowserRouter>
-    </QueryClientProvider>
+    <ThemeProvider defaultTheme="system" storageKey="bettercd-theme">
+        <QueryClientProvider client={queryClient}>
+            <BrowserRouter>
+                <App />
+                <ReactQueryDevtools initialIsOpen={false} />
+            </BrowserRouter>
+        </QueryClientProvider>
+    </ThemeProvider>
 );

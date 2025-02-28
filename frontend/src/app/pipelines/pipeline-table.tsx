@@ -1,3 +1,7 @@
+import { Link } from 'react-router';
+
+import { Ellipsis, Trash2, Workflow } from 'lucide-react';
+
 import { Button } from '@/components/ui/button';
 import {
     DropdownMenu,
@@ -7,8 +11,6 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { useFetchPipelines } from '@/services/pipelines/pipelines';
-import { Ellipsis, Trash2, Workflow } from 'lucide-react';
-import { Link } from 'react-router';
 
 const PipelineTable = () => {
     const { data } = useFetchPipelines();
