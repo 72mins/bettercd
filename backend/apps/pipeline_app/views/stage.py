@@ -17,11 +17,7 @@ class StageViewSet(viewsets.ModelViewSet):
     parser_classes = [MultiPartParser, FormParser]
 
     def get_queryset(self):
-        return (
-            Stage.objects.selected_related("pipeline")
-            .filter(pipeline__user=self.request.user)
-            .order_by("order")
-        )
+        return Stage.objects.filter(pipeline__user=self.request.user).order_by("order")
 
     @action(detail=True, methods=["get"])
     def pipeline_stages(self, request, pk=None):

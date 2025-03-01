@@ -34,7 +34,7 @@ const Studio = ({ data }: { data: Stage[] }) => {
     });
 
     return (
-        <div className="w-full h-full">
+        <div className="w-full h-[calc(100vh-113px)]">
             <ReactFlow nodeTypes={NODE_TYPES} nodes={nodes} edges={edges}>
                 <Background variant={BackgroundVariant.Dots} size={2} />
             </ReactFlow>

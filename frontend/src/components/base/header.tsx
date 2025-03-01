@@ -1,11 +1,7 @@
-import { Separator } from "../ui/separator";
-
-const Header = ({ title, subTitle }: { title: string; subTitle: string }) => {
+const Header = ({ title }: { title: string }) => {
     return (
-        <div className="flex flex-col gap-1">
-            <h1 className="text-2xl font-normal tracking-tight">{title}</h1>
-            <p className="text-sm text-neutral-500">{subTitle}</p>
-            <Separator className="mt-2" />
+        <div className="flex flex-col gap-1 mt-8">
+            <h1 className="text-xl font-semibold mb-4">{title}</h1>
         </div>
     );
 };

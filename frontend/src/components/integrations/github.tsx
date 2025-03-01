@@ -54,7 +54,7 @@ const GithubConnect = () => {
     }
 
     return (
-        <div className="p-4">
+        <div className="mt-8">
             {!githubProfile ? (
                 <button
                     onClick={initiateGithubConnect}
