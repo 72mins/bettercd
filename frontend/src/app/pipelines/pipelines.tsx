@@ -3,10 +3,10 @@ import PipelineTable from './pipeline-table';
 
 const PipelinePage = () => {
     return (
-        <>
-            <Header title="Pipelines" subTitle="Create and maintain CI/CD pipelines" />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <Header title="Pipelines" />
             <PipelineTable />
-        </>
+        </div>
     );
 };
 
