@@ -53,6 +53,7 @@ const GithubNodeForm = () => {
                                         <Button
                                             variant="outline"
                                             role="combobox"
+                                            size="sm"
                                             className={cn('justify-between', !field.value && 'text-muted-foreground')}
                                         >
                                             {field.value

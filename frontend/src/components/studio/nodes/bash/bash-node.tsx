@@ -50,7 +50,7 @@ const BashNode = (props: BashNodeProps) => {
             >
                 <Sheet>
                     <SheetTrigger asChild>
-                        <Button disabled={scriptPending} className="text-blue-500" variant="link">
+                        <Button disabled={scriptPending} variant="link">
                             <FilePenLine />
                             Edit Bash Script
                         </Button>
