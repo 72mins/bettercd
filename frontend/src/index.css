@@ -139,15 +139,27 @@
     background-color: #fafafa;
 }
 
+.dark ::-webkit-scrollbar-track {
+    background-color: #282a36;
+}
+
 ::-webkit-scrollbar-thumb {
-    background-color: #6e7172;
+    background-color: #a8bbbf;
     border-radius: 20px;
     border: 6px solid transparent;
     background-clip: content-box;
 }
 
+.dark ::-webkit-scrollbar-thumb {
+    background-color: #6e7172;
+}
+
 ::-webkit-scrollbar-thumb:hover {
     background-color: #a8bbbf;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+    background-color: #6e7172;
 }
 
 .logo-text {

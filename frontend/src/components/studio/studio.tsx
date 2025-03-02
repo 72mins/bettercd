@@ -8,6 +8,8 @@ import { Stage } from '@/services/pipelines/stages';
 import { calculateEdges, calculatePosition, getNodeType } from './utils';
 
 import '@xyflow/react/dist/style.css';
+import StudioActions from './studio-actions';
+import EditorPanel from './nodes/bash/editor-panel';
 
 const NODE_TYPES = {
     bash: BashNode,
@@ -34,10 +36,12 @@ const Studio = ({ data }: { data: Stage[] }) => {
     });
 
     return (
-        <div className="w-full h-[calc(100vh-113px)]">
+        <div className="w-full h-[calc(100vh-113px)] flex">
+            <StudioActions />
             <ReactFlow nodeTypes={NODE_TYPES} nodes={nodes} edges={edges}>
                 <Background patternClassName="studio-pattern" variant={BackgroundVariant.Dots} size={2} />
             </ReactFlow>
+            <EditorPanel />
         </div>
     );
 };
