@@ -4,9 +4,7 @@ import CodeMirror from '@uiw/react-codemirror';
 import { githubDark, githubLight } from '@uiw/codemirror-theme-github';
 import { StreamLanguage } from '@codemirror/language';
 import { shell } from '@codemirror/legacy-modes/mode/shell';
-import { vim, Vim } from '@replit/codemirror-vim';
-
-Vim.map('<C-c>', '<Esc>');
+import { vim } from '@replit/codemirror-vim';
 
 import { useTheme } from '@/components/theme/theme-provider';
 
@@ -21,7 +19,7 @@ const CodeEditor = ({ value, setValue }: { value: string; setValue: (val: string
             theme={theme === 'light' ? githubLight : githubDark}
             value={value}
             onChange={onChange}
-            height={`${window.innerHeight * 0.80}px`}
+            height={`${window.innerHeight * 0.8}px`}
             extensions={[vim({ status: true }), StreamLanguage.define(shell)]}
         />
     );
