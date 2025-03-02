@@ -34,7 +34,7 @@ const NavigationBar = () => {
                             return (
                                 <NavLink
                                     key={title}
-                                    className="text-slate-500 hover:text-slate-700 inline-flex items-center px-1 pt-1 text-sm font-medium leading-5 focus:outline-none focus:text-slate-700 focus:border-slate-300 transition duration-150 ease-in-out [&.active]:border-b-2 [&.active]:border-black [&.active]:text-slate-900"
+                                    className="text-muted-foreground hover:text-primary inline-flex items-center px-1 pt-1 text-sm font-medium leading-5 focus:outline-none focus:text-primary focus:border-border transition duration-150 ease-in-out [&.active]:border-b-2 [&.active]:border-primary [&.active]:text-primary"
                                     to={url}
                                 >
                                     {title}
