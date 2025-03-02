@@ -1,0 +1,7 @@
+.studio-pattern {
+    fill: hsl(0 0% 70%) !important;
+}
+
+.dark .studio-pattern {
+    fill: hsl(0 0% 20%) !important;
+}

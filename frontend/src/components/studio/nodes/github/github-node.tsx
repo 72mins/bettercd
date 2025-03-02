@@ -2,7 +2,9 @@ import { NodeProps } from '@xyflow/react';
 
 import BaseNode from '../base-node';
 import GithubNodeForm from './github-node-form';
-import GithubIcon from '@/img/github-dark.svg';
+import GithubDark from '@/img/github-dark.svg';
+import GithubLight from '@/img/github-light.svg';
+import { useTheme } from '@/components/theme/theme-provider';
 
 interface GithubNodeProps extends NodeProps {
     data: {
@@ -16,11 +18,13 @@ const GithubNode = (props: GithubNodeProps) => {
         data: { label, order },
     } = props;
 
+    const { theme } = useTheme();
+
     return (
         <>
             <BaseNode
                 title={label}
-                icon={<img src={GithubIcon} alt="Github Logo" />}
+                icon={<img src={theme === 'light' ? GithubDark : GithubLight} alt="Github Logo" />}
                 description="Checkout latest changes from Github repository"
                 order={order}
                 stageType="VCS"

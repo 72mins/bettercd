@@ -1,10 +1,9 @@
 @import 'tailwindcss';
-
 @plugin "tailwindcss-animate";
 
 @custom-variant dark (&:is(.dark *));
-
 @import './styles/code-editor.css';
+@import './styles/studio.css';
 
 * {
     font-family: 'Geist', sans-serif;
@@ -12,27 +11,8 @@
     scroll-behavior: smooth;
 }
 
-::-webkit-scrollbar {
-    width: 20px;
-}
-
-::-webkit-scrollbar-track {
-    background-color: #fafafa;
-}
-
-::-webkit-scrollbar-thumb {
-    background-color: #6e7172;
-    border-radius: 20px;
-    border: 6px solid transparent;
-    background-clip: content-box;
-}
-
-::-webkit-scrollbar-thumb:hover {
-    background-color: #a8bbbf;
-}
-
 :root {
-    --background: hsl(0 0% 100%);
+    --background: hsl(0 100% 100%);
     --foreground: hsl(0 0% 3.9%);
     --card: hsl(0 0% 100%);
     --card-foreground: hsl(0 0% 3.9%);
@@ -48,7 +28,7 @@
     --accent-foreground: hsl(0 0% 9%);
     --destructive: hsl(0 84.2% 60.2%);
     --destructive-foreground: hsl(0 0% 98%);
-    --border: hsl(0 0% 89.8%);
+    --border: hsl(45,5%,85%);
     --input: hsl(0 0% 89.8%);
     --ring: hsl(0 0% 3.9%);
     --chart-1: hsl(12 76% 61%);
@@ -56,7 +36,7 @@
     --chart-3: hsl(197 37% 24%);
     --chart-4: hsl(43 74% 66%);
     --chart-5: hsl(27 87% 67%);
-    --radius: 0.6rem;
+    --radius: 0;
     --sidebar: hsl(0 0% 98%);
     --sidebar-foreground: hsl(240 5.3% 26.1%);
     --sidebar-primary: hsl(240 5.9% 10%);
@@ -68,13 +48,13 @@
 }
 
 .dark {
-    --background: oklch(0.195 0 0);
+    --background: hsl(0, 0%, 7%);
     --foreground: oklch(0.985 0 0);
     --card: hsl(0 0% 3.9%);
     --card-foreground: hsl(0 0% 98%);
     --popover: hsl(0 0% 3.9%);
     --popover-foreground: hsl(0 0% 98%);
-    --primary: hsl(0 0% 98%);
+    --primary: hsl(60, 11%, 98%);
     --primary-foreground: hsl(0 0% 9%);
     --secondary: hsl(0 0% 14.9%);
     --secondary-foreground: hsl(0 0% 98%);
@@ -84,9 +64,9 @@
     --accent-foreground: hsl(0 0% 98%);
     --destructive: hsl(0 62.8% 30.6%);
     --destructive-foreground: hsl(0 0% 98%);
-    --border: hsl(0 0% 14.9%);
+    --border: hsl(120, 1%, 17%);
     --input: hsl(0 0% 14.9%);
-    --ring: hsl(0 0% 83.1%);
+    --ring: hsl(0 0% 90.1%);
     --chart-1: hsl(220 70% 50%);
     --chart-2: hsl(160 60% 45%);
     --chart-3: hsl(30 80% 55%);
@@ -127,10 +107,10 @@
     --color-chart-3: var(--chart-3);
     --color-chart-4: var(--chart-4);
     --color-chart-5: var(--chart-5);
-    --radius-sm: calc(var(--radius) - 4px);
-    --radius-md: calc(var(--radius) - 2px);
-    --radius-lg: var(--radius);
-    --radius-xl: calc(var(--radius) + 4px);
+    --radius-sm: 0;
+    --radius-md: 0;
+    --radius-lg: 0;
+    --radius-xl: 0;
     --color-sidebar-ring: var(--sidebar-ring);
     --color-sidebar-border: var(--sidebar-border);
     --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -149,6 +129,37 @@
         @apply bg-background text-foreground;
         text-rendering: optimizeLegibility;
     }
+}
+
+::-webkit-scrollbar {
+    width: 20px;
+}
+
+::-webkit-scrollbar-track {
+    background-color: #fafafa;
+}
+
+.dark ::-webkit-scrollbar-track {
+    background-color: #282a36;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #a8bbbf;
+    border-radius: 20px;
+    border: 6px solid transparent;
+    background-clip: content-box;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+    background-color: #6e7172;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: #a8bbbf;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+    background-color: #6e7172;
 }
 
 .logo-text {
