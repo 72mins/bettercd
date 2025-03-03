@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { Calculator, Calendar, CreditCard, Settings, Smile, User } from 'lucide-react';
 
 import {
@@ -14,6 +15,20 @@ import { useCommandStore } from '@/store/command';
 
 const CreateStage = () => {
     const { open, setOpen } = useCommandStore();
+
+    useEffect(() => {
+        const down = (e: KeyboardEvent) => {
+            if (e.key === 'k' && (e.metaKey || e.ctrlKey)) {
+                e.preventDefault();
+
+                setOpen(true);
+            }
+        };
+
+        document.addEventListener('keydown', down);
+
+        return () => document.removeEventListener('keydown', down);
+    }, [setOpen]);
 
     return (
         <CommandDialog open={open} onOpenChange={setOpen}>
