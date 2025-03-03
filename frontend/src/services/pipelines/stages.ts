@@ -55,5 +55,6 @@ export const useGetScriptValue = (id: number, script: string | null) => {
     return useQuery<{ script_value: string }, Error>({
         queryKey: ['script-value', id],
         queryFn: () => getScriptValue(id, script),
+        enabled: id > 0 && !!script,
     });
 };
