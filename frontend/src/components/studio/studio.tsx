@@ -1,15 +1,16 @@
 import { useMemo } from 'react';
 
-import { ReactFlow, Background, BackgroundVariant } from '@xyflow/react';
+import { ReactFlow, Background, BackgroundVariant, Controls } from '@xyflow/react';
 
 import BashNode from './nodes/bash/bash-node';
 import GithubNode from './nodes/github/github-node';
 import { Stage } from '@/services/pipelines/stages';
+import EditorPanel from './nodes/bash/editor-panel';
+import StudioActions from './actions/studio-actions';
+import { usePanelStore } from '@/store/panel';
 import { calculateEdges, calculatePosition, getNodeType } from './utils';
 
 import '@xyflow/react/dist/style.css';
-import StudioActions from './studio-actions';
-import EditorPanel from './nodes/bash/editor-panel';
 
 const NODE_TYPES = {
     bash: BashNode,
@@ -17,6 +18,8 @@ const NODE_TYPES = {
 };
 
 const Studio = ({ data }: { data: Stage[] }) => {
+    const panelOpen = usePanelStore((state) => state.panelOpen);
+
     const edges = useMemo(() => calculateEdges(data), [data]);
 
     const nodes = useMemo(() => {
@@ -28,18 +31,38 @@ const Studio = ({ data }: { data: Stage[] }) => {
         }));
     }, [data]);
 
-    nodes.push({
-        id: 'github',
-        position: { x: -300, y: 350 },
-        type: 'github',
-        data: { label: 'Github Checkout', order: 0, script: null },
-    });
+    // TODO: Remove when Github node is implemented
+
+    //nodes.push({
+    //    id: 'github',
+    //    position: { x: -300, y: 350 },
+    //    type: 'github',
+    //    data: { label: 'Github Checkout', order: 0, script: null },
+    //});
 
     return (
         <div className="w-full h-[calc(100vh-113px)] flex">
             <StudioActions />
-            <ReactFlow nodeTypes={NODE_TYPES} nodes={nodes} edges={edges}>
+            <ReactFlow
+                fitView
+                fitViewOptions={{ maxZoom: 1 }}
+                zoomOnScroll={false}
+                zoomOnPinch={false}
+                zoomOnDoubleClick={false}
+                panOnDrag={!panelOpen}
+                nodesConnectable={false}
+                nodeTypes={NODE_TYPES}
+                nodes={nodes}
+                edges={edges}
+            >
                 <Background patternClassName="studio-pattern" variant={BackgroundVariant.Dots} size={2} />
+                <Controls
+                    position="top-left"
+                    fitViewOptions={{ maxZoom: 1 }}
+                    showZoom={false}
+                    showInteractive={false}
+                    showFitView={!panelOpen}
+                />
             </ReactFlow>
             <EditorPanel />
         </div>

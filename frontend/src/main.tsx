@@ -28,7 +28,7 @@ createRoot(document.getElementById('root')!).render(
         <QueryClientProvider client={queryClient}>
             <BrowserRouter>
                 <App />
-                <ReactQueryDevtools buttonPosition='bottom-left' initialIsOpen={false} />
+                <ReactQueryDevtools buttonPosition='top-left' initialIsOpen={false} />
             </BrowserRouter>
         </QueryClientProvider>
     </ThemeProvider>
