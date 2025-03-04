@@ -17,12 +17,12 @@ interface BashNodeProps extends NodeProps {
 const BashNode = (props: BashNodeProps) => {
     const {
         id,
-        data: { label, order, script },
+        data: { label, order },
     } = props;
 
     const openPanel = usePanelStore((state) => state.openPanel);
 
-    const { isPending: scriptPending } = useGetScriptValue(+id, script);
+    const { isPending: scriptPending } = useGetScriptValue(+id);
 
     return (
         <>

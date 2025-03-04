@@ -3,7 +3,7 @@ import { GitBranchPlus, Save, Settings } from 'lucide-react';
 import { usePanelStore } from '@/store/panel';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
-import CreateStage from './create-stage';
+import CreateStage from './stage/create-stage';
 import { useCommandStore } from '@/store/command';
 
 const saveCount: number = 0;

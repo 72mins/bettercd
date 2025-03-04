@@ -46,9 +46,6 @@ const Studio = ({ data }: { data: Stage[] }) => {
             <ReactFlow
                 fitView
                 fitViewOptions={{ maxZoom: 1 }}
-                zoomOnScroll={false}
-                zoomOnPinch={false}
-                zoomOnDoubleClick={false}
                 panOnDrag={!panelOpen}
                 nodesConnectable={false}
                 nodeTypes={NODE_TYPES}
@@ -59,7 +56,6 @@ const Studio = ({ data }: { data: Stage[] }) => {
                 <Controls
                     position="top-left"
                     fitViewOptions={{ maxZoom: 1 }}
-                    showZoom={false}
                     showInteractive={false}
                     showFitView={!panelOpen}
                 />

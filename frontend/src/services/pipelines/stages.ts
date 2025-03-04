@@ -24,6 +24,28 @@ export const useFetchPipelineStages = (id: number) => {
     });
 };
 
+const createStage = async (data: {
+    name: string;
+    description: string;
+    node_type: string;
+    pipeline: number;
+}): Promise<Stage> => {
+    const res = await axiosInstance.post('/ci-cd/stage/', data);
+
+    return res.data;
+};
+
+export const useCreateStage = () => {
+    const queryClient = useQueryClient();
+
+    return useMutation<Stage, Error, { name: string; description: string; node_type: string; pipeline: number }>({
+        mutationFn: (data) => createStage(data),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['pipeline-stages'] });
+        },
+    });
+};
+
 const updateStage = async (data: { id: string; script_value: string }) => {
     const res = await axiosInstance.patch(`/ci-cd/stage/${data.id}/`, { script_value: data.script_value });
 
@@ -41,20 +63,16 @@ export const useUpdateStage = () => {
     });
 };
 
-const getScriptValue = async (id: number, script: string | null): Promise<{ script_value: string }> => {
-    if (!script || script === null) {
-        return { script_value: '' };
-    }
-
+const getScriptValue = async (id: number): Promise<{ script_value: string }> => {
     const res = await axiosInstance.get(`/ci-cd/stage/${id}/script_value/`);
 
     return res.data;
 };
 
-export const useGetScriptValue = (id: number, script: string | null) => {
+export const useGetScriptValue = (id: number) => {
     return useQuery<{ script_value: string }, Error>({
         queryKey: ['script-value', id],
-        queryFn: () => getScriptValue(id, script),
-        enabled: id > 0 && !!script,
+        queryFn: () => getScriptValue(id),
+        enabled: id > 0,
     });
 };
