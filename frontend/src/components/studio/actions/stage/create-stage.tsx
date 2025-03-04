@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useParams } from 'react-router';
 
 import { SquareTerminal } from 'lucide-react';
 
@@ -20,19 +21,29 @@ import Gitlab from '@/img/gitlab.svg';
 import Redis from '@/img/redis.svg';
 import Postgres from '@/img/postgresql.svg';
 import StageStep from './stage-step';
+import { useCreateGithubNode } from '@/services/pipelines/stages';
 
 const CreateStage = () => {
+    const { pipelineID } = useParams();
+
     const [stepOpen, setStepOpen] = useState<boolean>(false);
     const openStep = () => setStepOpen(true);
 
     const { open, setOpen, closeCommand } = useCommandStore();
     const { theme } = useTheme();
 
-    const handleClick = (val: string) => {
-        if (val === 'custom') {
-            closeCommand();
+    const { mutate: createGithubNode } = useCreateGithubNode();
 
-            openStep();
+    const handleClick = (val: string) => {
+        switch (val) {
+            case 'custom':
+                closeCommand();
+                openStep();
+                break;
+            case 'github':
+                createGithubNode({ pipeline: pipelineID ? +pipelineID : 0 });
+                closeCommand();
+                break;
         }
     };
 
@@ -43,7 +54,7 @@ const CreateStage = () => {
                 <CommandList>
                     <CommandEmpty>No results found.</CommandEmpty>
                     <CommandGroup heading="Version Control">
-                        <CommandItem>
+                        <CommandItem onSelect={() => handleClick('github')}>
                             <img
                                 className="size-4"
                                 src={theme === 'light' ? GithubDark : GithubLight}

@@ -4,6 +4,8 @@ export const getNodeType = (stageType: string) => {
     switch (stageType) {
         case 'CUSTOM':
             return 'bash';
+        case 'GITHUB':
+            return 'github';
         default:
             return 'bash';
     }
@@ -19,6 +21,7 @@ export const calculatePosition = (order: number) => {
 };
 
 export const calculateEdges = (stages: Stage[]) => {
+    console.log(stages, 'stages')
     return stages
         .map((stage, index) => {
             if (index === stages.length - 1) {

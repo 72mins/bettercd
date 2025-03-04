@@ -26,19 +26,10 @@ const Studio = ({ data }: { data: Stage[] }) => {
         return data.map((stage) => ({
             id: stage.id.toString(),
             position: calculatePosition(stage.order),
-            type: getNodeType(stage.stage_type),
+            type: getNodeType(stage.node_type),
             data: { label: stage.name, order: stage.order, script: stage.script },
         }));
     }, [data]);
-
-    // TODO: Remove when Github node is implemented
-
-    //nodes.push({
-    //    id: 'github',
-    //    position: { x: -300, y: 350 },
-    //    type: 'github',
-    //    data: { label: 'Github Checkout', order: 0, script: null },
-    //});
 
     return (
         <div className="w-full h-[calc(100vh-113px)] flex">
