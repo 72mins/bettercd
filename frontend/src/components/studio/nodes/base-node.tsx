@@ -35,7 +35,7 @@ const BaseNode = ({
             <Separator className="mt-2" />
             <p className="mt-2 text-xs text-muted-foreground">{description}</p>
             <div className="mt-8 flex items-center justify-center">{children}</div>
-            {order !== 1 && <Handle type="target" position={Position.Left} />}
+            {order !== 0 && <Handle type="target" position={Position.Left} />}
             <Handle type="source" position={Position.Right} />
         </div>
     );

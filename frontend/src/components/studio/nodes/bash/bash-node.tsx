@@ -9,26 +9,26 @@ import { usePanelStore } from '@/store/panel';
 interface BashNodeProps extends NodeProps {
     data: {
         label: string;
+        description: string;
         order: number;
-        script: string | null;
     };
 }
 
 const BashNode = (props: BashNodeProps) => {
     const {
         id,
-        data: { label, order, script },
+        data: { label, description, order },
     } = props;
 
     const openPanel = usePanelStore((state) => state.openPanel);
 
-    const { isPending: scriptPending } = useGetScriptValue(+id, script);
+    const { isPending: scriptPending } = useGetScriptValue(+id);
 
     return (
         <>
             <BaseNode
                 title={label}
-                description="Checkout from VCS, run unit tests and send message to Slack"
+                description={description}
                 order={order}
                 icon={<SquareTerminal className="text-muted-foreground" />}
                 stageType="Custom"

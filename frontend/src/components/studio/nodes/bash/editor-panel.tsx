@@ -11,7 +11,7 @@ import { usePanelStore } from '@/store/panel';
 const EditorPanel = () => {
     const { panel, panelValue, setPanelValue, panelOpen, closePanel } = usePanelStore();
 
-    const { data: scriptData, isPending: scriptPending } = useGetScriptValue(+panel, panelValue);
+    const { data: scriptData, isPending: scriptPending } = useGetScriptValue(+panel);
 
     const { mutate, isPending } = useUpdateStage();
 
