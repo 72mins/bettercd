@@ -12,16 +12,10 @@ export const getNodeType = (stageType: string) => {
 };
 
 export const calculatePosition = (order: number) => {
-    // Offset the first node to the right, so it's not at the edge
-    if (order === 1) {
-        return { x: 200, y: 350 };
-    }
-
-    return { x: 200 + (order - 1) * 500, y: 350 };
+    return { x: 0 + (order - 1) * 500, y: 350 };
 };
 
 export const calculateEdges = (stages: Stage[]) => {
-    console.log(stages, 'stages')
     return stages
         .map((stage, index) => {
             if (index === stages.length - 1) {

@@ -31,7 +31,7 @@ class Stage(models.Model):
 
     def clean(self):
         if self.node_type == "CUSTOM" and not self.name:
-            raise ValidationError("Name is required for custom functions")
+            raise ValidationError({"error": "Name is required for custom functions"})
 
         if self.node_type in ["GITHUB", "GITLAB"]:
             vcs_stages = Stage.objects.filter(
@@ -39,7 +39,9 @@ class Stage(models.Model):
             ).exclude(pk=self.pk)
 
             if vcs_stages.exists():
-                raise ValidationError("There can only be one VCS stage per pipeline")
+                raise ValidationError(
+                    {"error": "There can be only one VCS stage per pipeline"}
+                )
 
         return super().clean()
 

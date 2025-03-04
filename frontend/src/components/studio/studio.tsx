@@ -27,7 +27,7 @@ const Studio = ({ data }: { data: Stage[] }) => {
             id: stage.id.toString(),
             position: calculatePosition(stage.order),
             type: getNodeType(stage.node_type),
-            data: { label: stage.name, order: stage.order, script: stage.script },
+            data: { label: stage.name, order: stage.order, description: stage.description },
         }));
     }, [data]);
 
