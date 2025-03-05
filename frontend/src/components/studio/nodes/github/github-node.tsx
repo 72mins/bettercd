@@ -5,17 +5,20 @@ import GithubNodeForm from './github-node-form';
 import GithubDark from '@/img/github-dark.svg';
 import GithubLight from '@/img/github-light.svg';
 import { useTheme } from '@/components/theme/theme-provider';
+import { Params } from '@/store/changes';
 
 interface GithubNodeProps extends NodeProps {
     data: {
         label: string;
         order: number;
+        params: Params;
     };
 }
 
 const GithubNode = (props: GithubNodeProps) => {
     const {
-        data: { label, order },
+        id,
+        data: { label, order, params },
     } = props;
 
     const { theme } = useTheme();
@@ -29,7 +32,7 @@ const GithubNode = (props: GithubNodeProps) => {
                 order={order}
                 stageType="VCS"
             >
-                <GithubNodeForm />
+                <GithubNodeForm stageID={id} params={params} />
             </BaseNode>
         </>
     );

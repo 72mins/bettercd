@@ -13,6 +13,7 @@ import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, Command
 import GithubDark from '@/img/github-dark.svg';
 import GithubLight from '@/img/github-light.svg';
 import { useTheme } from '@/components/theme/theme-provider';
+import { Params, useChangesStore } from '@/store/changes';
 
 const formSchema = z.object({
     repo_id: z.string().nonempty({ message: 'Repository ID is required' }),
@@ -31,26 +32,23 @@ const branches = [
     { value: 'dev', label: 'dev' },
 ];
 
-const GithubNodeForm = () => {
+const GithubNodeForm = ({ stageID, params }: { stageID: string; params: Params }) => {
     const [open, setOpen] = useState<{ repo: boolean; branch: boolean }>({ repo: false, branch: false });
 
+    const { addChange } = useChangesStore();
     const { theme } = useTheme();
 
     const form = useForm<FormValues>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            repo_id: '',
-            repo_branch: '',
+            repo_id: params?.repo_id || '',
+            repo_branch: params?.repo_branch || '',
         },
     });
 
-    const onSubmit = async (data: FormValues) => {
-        console.log(data);
-    };
-
     return (
         <Form {...form}>
-            <form className="w-full grid gap-4" onSubmit={form.handleSubmit(onSubmit)}>
+            <form className="w-full grid gap-4">
                 <FormField
                     control={form.control}
                     name="repo_id"
@@ -97,6 +95,11 @@ const GithubNodeForm = () => {
                                                         key={repo.value}
                                                         onSelect={() => {
                                                             form.setValue('repo_id', repo.value);
+
+                                                            addChange({
+                                                                stage_id: +stageID,
+                                                                params: { repo_id: repo.value },
+                                                            });
                                                             setOpen({ ...open, repo: false });
                                                         }}
                                                     >
@@ -161,6 +164,11 @@ const GithubNodeForm = () => {
                                                         key={branch.value}
                                                         onSelect={() => {
                                                             form.setValue('repo_branch', branch.value);
+
+                                                            addChange({
+                                                                stage_id: +stageID,
+                                                                params: { repo_branch: branch.value },
+                                                            });
 
                                                             setOpen({ ...open, branch: false });
                                                         }}
