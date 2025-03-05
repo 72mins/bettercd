@@ -9,6 +9,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { useCreateStage } from '@/services/pipelines/stages';
 import { toast } from 'sonner';
 import { useParams } from 'react-router';
+import { useReactFlow } from '@xyflow/react';
 
 const formSchema = z.object({
     name: z.string().min(1, { message: 'Name is required' }).max(100, { message: 'Name is too long' }),
@@ -21,6 +22,7 @@ type FormValues = z.infer<typeof formSchema>;
 
 const FunctionForm = ({ closeDialog }: { closeDialog: () => void }) => {
     const { pipelineID } = useParams();
+    const { fitView } = useReactFlow();
 
     const { mutate, isPending } = useCreateStage();
 
@@ -36,10 +38,14 @@ const FunctionForm = ({ closeDialog }: { closeDialog: () => void }) => {
 
     const onSubmit = async (data: FormValues) => {
         mutate(data, {
-            onSuccess: () => {
+            onSuccess: (res) => {
                 toast.success('Custom function created');
 
                 closeDialog();
+
+                setTimeout(() => {
+                    fitView({ nodes: [{ id: String(res.id) }], duration: 500, maxZoom: 1 });
+                }, 100);
             },
         });
     };

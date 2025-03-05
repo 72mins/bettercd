@@ -11,6 +11,7 @@ import { usePanelStore } from '@/store/panel';
 import { calculateEdges, calculatePosition, getNodeType } from './utils';
 
 import '@xyflow/react/dist/style.css';
+import { useTheme } from '../theme/theme-provider';
 
 const NODE_TYPES = {
     bash: BashNode,
@@ -18,6 +19,8 @@ const NODE_TYPES = {
 };
 
 const Studio = ({ data }: { data: Stage[] }) => {
+    const { theme } = useTheme();
+
     const panelOpen = usePanelStore((state) => state.panelOpen);
 
     const edges = useMemo(() => calculateEdges(data), [data]);
@@ -38,10 +41,14 @@ const Studio = ({ data }: { data: Stage[] }) => {
                 fitView
                 fitViewOptions={{ maxZoom: 1 }}
                 panOnDrag={!panelOpen}
+                zoomOnDoubleClick={!panelOpen}
+                zoomOnScroll={!panelOpen}
+                zoomOnPinch={!panelOpen}
                 nodesConnectable={false}
                 nodeTypes={NODE_TYPES}
                 nodes={nodes}
                 edges={edges}
+                colorMode={theme}
             >
                 <Background patternClassName="studio-pattern" variant={BackgroundVariant.Dots} size={2} />
                 <Controls
@@ -49,6 +56,7 @@ const Studio = ({ data }: { data: Stage[] }) => {
                     fitViewOptions={{ maxZoom: 1 }}
                     showInteractive={false}
                     showFitView={!panelOpen}
+                    showZoom={!panelOpen}
                 />
             </ReactFlow>
             <EditorPanel />

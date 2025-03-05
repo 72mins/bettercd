@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { toast } from 'sonner';
 import axios from 'axios';
+import { ReactFlowProvider } from '@xyflow/react';
 
 import App from './App.tsx';
 import { ThemeProvider } from './components/theme/theme-provider.tsx';
@@ -27,8 +28,10 @@ createRoot(document.getElementById('root')!).render(
     <ThemeProvider defaultTheme="system" storageKey="bettercd-theme">
         <QueryClientProvider client={queryClient}>
             <BrowserRouter>
-                <App />
-                <ReactQueryDevtools buttonPosition='top-left' initialIsOpen={false} />
+                <ReactFlowProvider>
+                    <App />
+                </ReactFlowProvider>
+                <ReactQueryDevtools buttonPosition="top-left" initialIsOpen={false} />
             </BrowserRouter>
         </QueryClientProvider>
     </ThemeProvider>
