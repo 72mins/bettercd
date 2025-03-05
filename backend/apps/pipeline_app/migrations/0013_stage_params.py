@@ -4,15 +4,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('pipeline_app', '0012_alter_stage_node_type'),
+        ("pipeline_app", "0012_alter_stage_node_type"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='stage',
-            name='params',
+            model_name="stage",
+            name="params",
             field=models.JSONField(blank=True, null=True),
         ),
     ]

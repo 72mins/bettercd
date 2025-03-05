@@ -4,15 +4,18 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('pipeline_app', '0010_alter_stage_name'),
+        ("pipeline_app", "0010_alter_stage_name"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='stage',
-            name='node_type',
-            field=models.CharField(choices=[('CUSTOM', 'Custom'), ('VCS', 'VCS')], default='CUSTOM', max_length=50),
+            model_name="stage",
+            name="node_type",
+            field=models.CharField(
+                choices=[("CUSTOM", "Custom"), ("VCS", "VCS")],
+                default="CUSTOM",
+                max_length=50,
+            ),
         ),
     ]

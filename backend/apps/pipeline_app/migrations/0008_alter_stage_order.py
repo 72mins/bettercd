@@ -4,15 +4,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('pipeline_app', '0007_remove_stage_stage_type'),
+        ("pipeline_app", "0007_remove_stage_stage_type"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='stage',
-            name='order',
+            model_name="stage",
+            name="order",
             field=models.IntegerField(blank=True, null=True),
         ),
     ]

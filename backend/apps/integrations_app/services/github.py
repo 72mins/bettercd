@@ -3,6 +3,7 @@ import requests
 
 # TODO: Refactor logic to use GitHub App instead of Github OAuth
 
+
 class GithubClient:
     def __init__(self):
         self.client_id = os.getenv("GITHUB_CLIENT_ID")

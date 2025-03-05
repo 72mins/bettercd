@@ -73,6 +73,10 @@ class MassPipelineSave(generics.GenericAPIView):
                 errors.append({"stage_id": stage_id, "error": str(e)})
 
         return Response(
-            {"updated_stages": updated_stages, "errors": errors, "updated_count": len(updated_stages)},
+            {
+                "updated_stages": updated_stages,
+                "errors": errors,
+                "updated_count": len(updated_stages),
+            },
             status=status.HTTP_200_OK,
         )
