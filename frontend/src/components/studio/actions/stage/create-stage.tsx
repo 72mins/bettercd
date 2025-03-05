@@ -14,6 +14,8 @@ import {
 } from '@/components/ui/command';
 import { useCommandStore } from '@/store/command';
 import { useTheme } from '@/components/theme/theme-provider';
+import { useReactFlow } from '@xyflow/react';
+import { toast } from 'sonner';
 
 import GithubDark from '@/img/github-dark.svg';
 import GithubLight from '@/img/github-light.svg';
@@ -25,6 +27,7 @@ import { useCreateGithubNode } from '@/services/pipelines/stages';
 
 const CreateStage = () => {
     const { pipelineID } = useParams();
+    const { fitView } = useReactFlow();
 
     const [stepOpen, setStepOpen] = useState<boolean>(false);
     const openStep = () => setStepOpen(true);
@@ -41,8 +44,20 @@ const CreateStage = () => {
                 openStep();
                 break;
             case 'github':
-                createGithubNode({ pipeline: pipelineID ? +pipelineID : 0 });
-                closeCommand();
+                createGithubNode(
+                    { pipeline: pipelineID ? +pipelineID : 0 },
+                    {
+                        onSuccess: (res) => {
+                            toast.success('GitHub node created');
+
+                            closeCommand();
+
+                            setTimeout(() => {
+                                fitView({ nodes: [{ id: String(res.id) }], duration: 500, maxZoom: 1 });
+                            }, 100);
+                        },
+                    }
+                );
                 break;
         }
     };

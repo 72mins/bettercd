@@ -1,4 +1,4 @@
-import { NodeProps } from '@xyflow/react';
+import { NodeProps, useReactFlow } from '@xyflow/react';
 import { FilePenLine, SquareTerminal } from 'lucide-react';
 
 import BaseNode from '../base-node';
@@ -20,9 +20,19 @@ const BashNode = (props: BashNodeProps) => {
         data: { label, description, order },
     } = props;
 
+    const { fitView } = useReactFlow();
+
     const openPanel = usePanelStore((state) => state.openPanel);
 
     const { isPending: scriptPending } = useGetScriptValue(+id);
+
+    const handlePanelOpen = () => {
+        openPanel(id);
+
+        setTimeout(() => {
+            fitView({ nodes: [{ id }], duration: 500, maxZoom: 1.25 });
+        }, 150);
+    };
 
     return (
         <>
@@ -33,7 +43,7 @@ const BashNode = (props: BashNodeProps) => {
                 icon={<SquareTerminal className="text-muted-foreground" />}
                 stageType="Custom"
             >
-                <Button disabled={scriptPending} variant="link" onClick={() => openPanel(id)}>
+                <Button disabled={scriptPending} variant="link" onClick={handlePanelOpen}>
                     <FilePenLine />
                     Edit Bash Script
                 </Button>
