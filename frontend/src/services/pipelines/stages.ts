@@ -1,5 +1,7 @@
-import { axiosInstance } from '@/axios';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+
+import { axiosInstance } from '@/axios';
+import { Params } from '@/store/changes';
 
 type NodeTypes = 'GITHUB' | 'CUSTOM' | 'DEPLOY' | 'TEST' | 'NOTIFY';
 
@@ -11,6 +13,7 @@ export interface Stage {
     node_type: NodeTypes;
     script: string | null;
     pipeline: number;
+    params: Params;
 }
 
 interface CreateStageParams {

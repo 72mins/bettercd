@@ -4,14 +4,13 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('pipeline_app', '0006_environmentvariable'),
+        ("pipeline_app", "0006_environmentvariable"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='stage',
-            name='stage_type',
+            model_name="stage",
+            name="stage_type",
         ),
     ]

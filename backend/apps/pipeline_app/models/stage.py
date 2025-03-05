@@ -22,6 +22,7 @@ class Stage(models.Model):
         max_length=50, choices=NODE_TYPE_CHOICES, default="CUSTOM"
     )
     script = models.FileField(null=True, blank=True)
+    params = models.JSONField(null=True, blank=True)
 
     def __str__(self):
         return f"# {self.order} {self.name} - {self.pipeline}"
