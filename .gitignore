@@ -8,6 +8,7 @@ venv/
 __pycache__/
 static
 service-account.json
+github-private-key.pem
 
 # Frontend ignore
 logs

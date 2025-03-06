@@ -1,3 +1,3 @@
-from .github import GithubAuthURL, GithubCallback
+from .github import GithubAuthURL, GithubCallback, UserRepositories, GithubProfileView, RemoveGithubIntegration
 
-__all__ = ["GithubAuthURL", "GithubCallback"]
+__all__ = ["GithubAuthURL", "GithubCallback", "UserRepositories", "GithubProfileView", "RemoveGithubIntegration"]

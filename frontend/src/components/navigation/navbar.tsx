@@ -18,7 +18,7 @@ const navItems: NavItem[] = [
     },
     {
         title: 'Integrations',
-        url: '/dashboard/git',
+        url: '/dashboard/integrations',
     },
 ];
 

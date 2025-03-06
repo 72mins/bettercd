@@ -7,7 +7,7 @@ import { Toaster } from './components/ui/sonner';
 import DashboardPage from './app/dashboard/dashboard';
 import PipelinePage from './app/pipelines/pipelines';
 import PipelineStudio from './app/pipelines/pipeline-studio';
-import GithubIntegrationPage from './app/integrations/github';
+import IntegrationsPage from './components/integrations';
 
 function App() {
     return (
@@ -27,7 +27,9 @@ function App() {
                             <Route path="pipelines/:pipelineID/studio" element={<PipelineStudio />} />
                             <Route path="build-history" element={<div>Build History</div>} />
                         </Route>
-                        <Route path="git" element={<GithubIntegrationPage />} />
+                        <Route path="integrations">
+                            <Route index element={<IntegrationsPage />} />
+                        </Route>
                     </Route>
                 </Route>
             </Routes>

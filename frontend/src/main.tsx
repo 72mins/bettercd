@@ -31,7 +31,7 @@ createRoot(document.getElementById('root')!).render(
                 <ReactFlowProvider>
                     <App />
                 </ReactFlowProvider>
-                <ReactQueryDevtools buttonPosition="top-left" initialIsOpen={false} />
+                <ReactQueryDevtools buttonPosition="bottom-left" initialIsOpen={false} />
             </BrowserRouter>
         </QueryClientProvider>
     </ThemeProvider>

@@ -151,8 +151,9 @@ ENV_VALIDATOR_RULES = {
     "GCLOUD_PROJECT_ID": {"required": True},
     "GCLOUD_LOG_SUBSCRIPTION_ID": {"required": True},
     "GCLOUD_REGION": {"required": True},
-    "GITHUB_CLIENT_ID": {"required": True},
-    "GITHUB_CLIENT_SECRET": {"required": True},
+    "GITHUB_APP_ID": {"required": True},
+    "GITHUB_APP_NAME": {"required": True},
+    "GITHUB_PRIVATE_KEY_PATH": {"required": True},
     "GITHUB_CALLBACK_URL": {"required": True},
 }
 
