@@ -13,12 +13,12 @@ const navItems: NavItem[] = [
         url: '/dashboard/ci-cd/pipelines',
     },
     {
-        title: ' History',
+        title: 'Build History',
         url: '/dashboard/ci-cd/build-history',
     },
     {
         title: 'Integrations',
-        url: '/dashboard/git',
+        url: '/dashboard/integrations',
     },
 ];
 

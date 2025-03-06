@@ -6,4 +6,4 @@ from apps.integrations_app.models.github import GithubProfile
 class GithubProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = GithubProfile
-        fields = "__all__"
+        exclude = ["access_token", "token_expires_at", "installation_id"]

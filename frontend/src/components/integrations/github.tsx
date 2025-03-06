@@ -1,74 +1,98 @@
-// Ignore typescript for this file
-// @ts-nocheck
+import { useEffect, useCallback } from 'react';
 
 import { axiosInstance } from '@/axios';
-import { useEffect, useState } from 'react';
+import { toast } from 'sonner';
 
-const GithubConnect = () => {
-    const [githubProfile, setGithubProfile] = useState(null);
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
+import { Card, CardContent, CardDescription, CardTitle } from '../ui/card';
+import { useTheme } from '../theme/theme-provider';
+import GithubDark from '@/img/github-dark.svg';
+import GithubLight from '@/img/github-light.svg';
+import { Button } from '../ui/button';
+import { useGithubStore } from '@/store/github';
+
+const GithubIntegration = () => {
+    const { profile, setProfile, clearProfile } = useGithubStore();
+
+    const { theme } = useTheme();
 
     const initiateGithubConnect = async () => {
         try {
             const response = await axiosInstance.get('/github/auth-url/');
+
             window.location.href = response.data.auth_url;
-        } catch (err) {
-            setError('Failed to initiate GitHub connection');
-            console.error(err);
+        } catch {
+            toast.error('Failed to connect GitHub App');
         }
     };
 
-    const handleGithubCallback = async (code) => {
+    const removeIntegration = async () => {
         try {
-            setLoading(true);
-            const response = await axiosInstance.post('/github/callback/', { code });
-            setGithubProfile(response.data);
-            // Clear the code from the URL
-            window.history.replaceState({}, document.title, window.location.pathname);
-            // Fetch repositories after successful connection
-        } catch (err) {
-            setError('Failed to connect GitHub account');
-            console.error(err);
-        } finally {
-            setLoading(false);
+            const response = await axiosInstance.delete('/github/remove-integration/');
+
+            if (response.data.github_app_removal_url) {
+                clearProfile();
+
+                const width = 1200;
+                const height = 600;
+                const left = window.screen.width / 2 - width / 2;
+                const top = window.screen.height / 2 - height / 2;
+
+                window.open(
+                    response.data.github_app_removal_url,
+                    'github-removal',
+                    `width=${width},height=${height},top=${top},left=${left},resizable=yes,scrollbars=yes,status=yes`
+                );
+            }
+        } catch {
+            toast.error('Failed to remove GitHub App');
         }
     };
+
+    const handleGithubCallback = useCallback(
+        async (installationId: string) => {
+            try {
+                const response = await axiosInstance.post('/github/callback/', {
+                    installation_id: installationId,
+                });
+
+                setProfile(response.data);
+
+                window.history.replaceState({}, document.title, window.location.pathname);
+            } catch {
+                toast.error('Failed to connect GitHub App');
+            }
+        },
+        [setProfile]
+    );
 
     useEffect(() => {
-        // Check if we're handling the OAuth callback
         const urlParams = new URLSearchParams(window.location.search);
-        const code = urlParams.get('code');
 
-        if (code) {
-            handleGithubCallback(code);
-        }
-    }, []);
+        const installationId = urlParams.get('installation_id');
 
-    if (loading) {
-        return <div>Loading...</div>;
-    }
-
-    if (error) {
-        return <div className="text-red-500">{error}</div>;
-    }
+        if (installationId) handleGithubCallback(installationId);
+    }, [handleGithubCallback]);
 
     return (
-        <div className="mt-8">
-            {!githubProfile ? (
-                <button
-                    onClick={initiateGithubConnect}
-                    className="bg-black text-white px-4 py-2 rounded hover:bg-gray-800"
-                >
-                    Connect GitHub Account
-                </button>
-            ) : (
-                <div>
-                    <h2 className="text-xl font-bold mb-4">Connected as {githubProfile.github_username}</h2>
-                </div>
-            )}
-        </div>
+        <Card className="w-1/3">
+            <CardContent className="flex flex-col gap-2">
+                <img src={theme === 'light' ? GithubDark : GithubLight} alt="GitHub" className="size-10" />
+                <CardTitle className="mt-4">GitHub</CardTitle>
+                <CardDescription>
+                    Integrate with GitHub to use GitHub repositories, events and webhooks in your pipelines.
+                </CardDescription>
+                {profile?.github_user_id ? (
+                    <Button variant="destructive" className="mt-4" onClick={removeIntegration}>
+                        Disconnect
+                    </Button>
+                ) : (
+                    <Button className="mt-4" onClick={initiateGithubConnect}>
+                        Install
+                    </Button>
+                )}
+            </CardContent>
+        </Card>
     );
 };
 
-export default GithubConnect;
+export default GithubIntegration;
