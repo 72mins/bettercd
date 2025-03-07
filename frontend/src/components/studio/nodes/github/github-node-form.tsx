@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
@@ -14,35 +14,51 @@ import GithubDark from '@/img/github-dark.svg';
 import GithubLight from '@/img/github-light.svg';
 import { useTheme } from '@/components/theme/theme-provider';
 import { Params, useChangesStore } from '@/store/changes';
+import { useGithubStore } from '@/store/github';
 
 const formSchema = z.object({
-    repo_id: z.string().nonempty({ message: 'Repository ID is required' }),
+    repo_id: z.number().int().positive({ message: 'Repository is required' }),
     repo_branch: z.string().nonempty({ message: 'Repository branch is required' }),
 });
 
 type FormValues = z.infer<typeof formSchema>;
 
-const repos = [
-    { value: '123', label: 'ghostty' },
-    { value: '124', label: 'bettercd' },
-];
-
-const branches = [
-    { value: 'master', label: 'master' },
-    { value: 'dev', label: 'dev' },
-];
-
 const GithubNodeForm = ({ stageID, params }: { stageID: string; params: Params }) => {
-    const [open, setOpen] = useState<{ repo: boolean; branch: boolean }>({ repo: false, branch: false });
-
     const { addChange } = useChangesStore();
+    const { repositories } = useGithubStore();
+
     const { theme } = useTheme();
+
+    const [open, setOpen] = useState<{ repo: boolean; branch: boolean }>({
+        repo: false,
+        branch: false,
+    });
+
+    const [selectedRepoId, setSelectedRepoId] = useState<number | null>(
+        params?.repo_id != null ? Number(params.repo_id) : null
+    );
+
+    const repos = useMemo(
+        () => repositories?.map((repo) => ({ label: repo.name, value: repo.id })) || [],
+        [repositories]
+    );
+
+    const branches = useMemo(() => {
+        const selectedRepo = repositories?.find((repo) => repo.id === selectedRepoId);
+
+        return (
+            selectedRepo?.branches?.map((branch) => ({
+                label: branch.name,
+                value: branch.name,
+            })) || []
+        );
+    }, [repositories, selectedRepoId]);
 
     const form = useForm<FormValues>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            repo_id: params?.repo_id || '',
-            repo_branch: params?.repo_branch || '',
+            repo_id: params?.repo_id != null ? Number(params.repo_id) : undefined,
+            repo_branch: params?.repo_branch != null ? String(params.repo_branch) : undefined,
         },
     });
 
@@ -95,12 +111,15 @@ const GithubNodeForm = ({ stageID, params }: { stageID: string; params: Params }
                                                         key={repo.value}
                                                         onSelect={() => {
                                                             form.setValue('repo_id', repo.value);
+                                                            setSelectedRepoId(repo.value);
 
                                                             addChange({
                                                                 stage_id: +stageID,
                                                                 params: { repo_id: repo.value },
                                                             });
                                                             setOpen({ ...open, repo: false });
+                                                            //Clear branch value when repo changes
+                                                            form.setValue('repo_branch', '');
                                                         }}
                                                     >
                                                         <img
@@ -139,6 +158,7 @@ const GithubNodeForm = ({ stageID, params }: { stageID: string; params: Params }
                                 <PopoverTrigger asChild>
                                     <FormControl>
                                         <Button
+                                            disabled={!form.getValues('repo_id')}
                                             variant="outline"
                                             role="combobox"
                                             size="sm"

@@ -4,6 +4,8 @@ import jwt
 import time
 from datetime import datetime
 from django.utils import timezone
+from requests.adapters import HTTPAdapter
+from urllib3.util.retry import Retry
 
 
 def _read_private_key(pem_path):
@@ -25,6 +27,25 @@ class GithubClient:
         self.app_name = os.getenv("GITHUB_APP_NAME")
         self.private_key = _read_private_key(os.getenv("GITHUB_PRIVATE_KEY_PATH"))
         self.callback_url = os.getenv("GITHUB_CALLBACK_URL")
+        self.session = self._create_session()
+
+    def _create_session(self):
+        """Create a session with retry logic."""
+        session = requests.Session()
+
+        retry = Retry(
+            total=3,
+            backoff_factor=0.5,
+            status_forcelist=[500, 502, 503, 504],
+            allowed_methods=["GET", "POST", "DELETE"],
+        )
+
+        adapter = HTTPAdapter(max_retries=retry)
+
+        session.mount("http://", adapter)
+        session.mount("https://", adapter)
+
+        return session
 
     def get_auth_url(self) -> str:
         """Auth URL is used to redirect the user to install the GitHub App"""
@@ -47,7 +68,7 @@ class GithubClient:
         """Get the installation ID for a specific user"""
         jwt_token = self.generate_jwt()
 
-        response = requests.get(
+        response = self.session.get(
             f"https://api.github.com/users/{username}/installation",
             headers={
                 "Authorization": f"Bearer {jwt_token}",
@@ -64,7 +85,7 @@ class GithubClient:
         """Get an installation access token"""
         jwt_token = self.generate_jwt()
 
-        response = requests.post(
+        response = self.session.post(
             f"https://api.github.com/app/installations/{installation_id}/access_tokens",
             headers={
                 "Authorization": f"Bearer {jwt_token}",
@@ -112,7 +133,7 @@ class GithubClient:
         """
         jwt_token = self.generate_jwt()
 
-        response = requests.delete(
+        response = self.session.delete(
             f"https://api.github.com/app/installations/{installation_id}",
             headers={
                 "Authorization": f"Bearer {jwt_token}",
@@ -147,7 +168,7 @@ class GithubClient:
         """
         jwt_token = self.generate_jwt()
 
-        response = requests.get(
+        response = self.session.get(
             f"https://api.github.com/app/installations/{installation_id}",
             headers={
                 "Authorization": f"Bearer {jwt_token}",
@@ -172,7 +193,7 @@ class GithubClient:
 
     def get_user_repos(self, access_token):
         """Get repositories accessible to the installation"""
-        response = requests.get(
+        response = self.session.get(
             "https://api.github.com/installation/repositories",
             headers={
                 "Authorization": f"token {access_token}",
@@ -187,7 +208,7 @@ class GithubClient:
 
     def get_repo_details(self, access_token, repo_id):
         """Get repository details"""
-        response = requests.get(
+        response = self.session.get(
             f"https://api.github.com/repositories/{repo_id}",
             headers={
                 "Authorization": f"token {access_token}",
@@ -202,7 +223,7 @@ class GithubClient:
 
     def get_repo_branches(self, access_token, repo_id):
         """Get repository branches"""
-        response = requests.get(
+        response = self.session.get(
             f"https://api.github.com/repositories/{repo_id}/branches",
             headers={
                 "Authorization": f"token {access_token}",
@@ -214,3 +235,4 @@ class GithubClient:
             return None
 
         return response.json()
+
