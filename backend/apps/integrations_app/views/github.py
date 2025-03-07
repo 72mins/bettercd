@@ -3,6 +3,9 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from datetime import datetime
+import concurrent.futures
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
 
 from apps.integrations_app.models.github import GithubProfile
 from apps.integrations_app.serializers.github import GithubProfileSerializer
@@ -71,6 +74,7 @@ class GithubCallback(generics.GenericAPIView):
 class UserRepositories(generics.GenericAPIView):
     permission_classes = [IsAuthenticated]
 
+    @method_decorator(cache_page(60))
     def get(self, request):
         try:
             github_profile = GithubProfile.objects.get(user=request.user)
@@ -90,16 +94,28 @@ class UserRepositories(generics.GenericAPIView):
                 )
 
             response = []
-            for repo in user_repos:
-                response.append(
-                    {
-                        "id": repo["id"],
-                        "name": repo["name"],
-                        "full_name": repo["full_name"],
-                        "clone_url": repo["clone_url"],
-                        "default_branch": repo["default_branch"],
-                    }
-                )
+            with concurrent.futures.ThreadPoolExecutor() as executor:
+                futures = {
+                    repo["id"]: executor.submit(
+                        github_client.get_repo_branches, token, repo["id"]
+                    )
+                    for repo in user_repos
+                }
+
+                for repo in user_repos:
+                    repo_id = repo["id"]
+
+                    branches = futures[repo_id].result()
+                    branches = sorted(branches, key=lambda x: x["name"])
+
+                    response.append(
+                        {
+                            "id": repo_id,
+                            "name": repo["name"],
+                            "branches": branches,
+                        }
+                    )
+                    response = sorted(response, key=lambda x: x["name"])
 
             return Response(response, status=status.HTTP_200_OK)
 
@@ -151,4 +167,3 @@ class RemoveGithubIntegration(generics.GenericAPIView):
             return Response(
                 {"error": "GitHub profile not found"}, status=status.HTTP_404_NOT_FOUND
             )
-

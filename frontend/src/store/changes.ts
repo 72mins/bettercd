@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 
 export interface Params {
-    [key: string]: string;
+    [key: string]: string | number;
 }
 
 interface Change {
