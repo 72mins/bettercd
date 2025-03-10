@@ -18,7 +18,7 @@ const NODE_TYPES = {
     github: GithubNode,
 };
 
-const Studio = ({ data }: { data: Stage[] }) => {
+const Studio = ({ data, last_order }: { data: Stage[]; last_order: number }) => {
     const { theme } = useTheme();
 
     const panelOpen = usePanelStore((state) => state.panelOpen);
@@ -30,9 +30,15 @@ const Studio = ({ data }: { data: Stage[] }) => {
             id: stage.id.toString(),
             position: calculatePosition(stage.order),
             type: getNodeType(stage.node_type),
-            data: { label: stage.name, order: stage.order, description: stage.description, params: stage.params },
+            data: {
+                label: stage.name,
+                order: stage.order,
+                description: stage.description,
+                params: stage.params,
+                last_order,
+            },
         }));
-    }, [data]);
+    }, [data, last_order]);
 
     return (
         <div className="w-full h-[calc(100vh-113px)] flex">
@@ -53,7 +59,7 @@ const Studio = ({ data }: { data: Stage[] }) => {
                 <Background patternClassName="studio-pattern" variant={BackgroundVariant.Dots} size={2} />
                 <Controls
                     position="top-left"
-                    fitViewOptions={{ maxZoom: 1 }}
+                    fitViewOptions={{ maxZoom: 1, duration: 500 }}
                     showInteractive={false}
                     showFitView={!panelOpen}
                     showZoom={!panelOpen}

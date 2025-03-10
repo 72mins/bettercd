@@ -16,6 +16,11 @@ export interface Stage {
     params: Params;
 }
 
+interface PipelineStages {
+    stages: Stage[];
+    last_order: number;
+}
+
 interface CreateStageParams {
     name: string;
     description: string;
@@ -23,14 +28,14 @@ interface CreateStageParams {
     pipeline: number;
 }
 
-const fetchPipelineStages = async (id: number): Promise<Stage[]> => {
+const fetchPipelineStages = async (id: number): Promise<PipelineStages> => {
     const res = await axiosInstance.get(`/ci-cd/stage/${id}/pipeline_stages/`);
 
     return res.data;
 };
 
 export const useFetchPipelineStages = (id: number) => {
-    return useQuery<Stage[], Error>({
+    return useQuery<PipelineStages, Error>({
         queryKey: ['pipeline-stages', id],
         queryFn: () => fetchPipelineStages(id),
     });

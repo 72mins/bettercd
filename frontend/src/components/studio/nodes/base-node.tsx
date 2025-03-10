@@ -9,6 +9,7 @@ const BaseNode = ({
     icon,
     order,
     stageType,
+    last_order,
     children,
 }: {
     title: string | unknown;
@@ -16,6 +17,7 @@ const BaseNode = ({
     icon: React.ReactNode;
     order: number;
     stageType: string;
+    last_order: number;
     children: React.ReactNode;
 }) => {
     return (
@@ -36,7 +38,7 @@ const BaseNode = ({
             <p className="mt-2 text-xs text-muted-foreground">{description}</p>
             <div className="mt-8 flex items-center justify-center">{children}</div>
             {order !== 0 && <Handle type="target" position={Position.Left} />}
-            <Handle type="source" position={Position.Right} />
+            {order !== last_order && <Handle type="source" position={Position.Right} />}
         </div>
     );
 };

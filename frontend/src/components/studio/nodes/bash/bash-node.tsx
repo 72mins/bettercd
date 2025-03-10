@@ -11,13 +11,14 @@ interface BashNodeProps extends NodeProps {
         label: string;
         description: string;
         order: number;
+        last_order: number;
     };
 }
 
 const BashNode = (props: BashNodeProps) => {
     const {
         id,
-        data: { label, description, order },
+        data: { label, description, order, last_order },
     } = props;
 
     const { fitView } = useReactFlow();
@@ -30,7 +31,7 @@ const BashNode = (props: BashNodeProps) => {
         openPanel(id);
 
         setTimeout(() => {
-            fitView({ nodes: [{ id }], duration: 500, maxZoom: 1.25 });
+            fitView({ nodes: [{ id }], duration: 500, maxZoom: 1.1 });
         }, 150);
     };
 
@@ -40,6 +41,7 @@ const BashNode = (props: BashNodeProps) => {
                 title={label}
                 description={description}
                 order={order}
+                last_order={last_order}
                 icon={<SquareTerminal className="text-muted-foreground" />}
                 stageType="Custom"
             >
