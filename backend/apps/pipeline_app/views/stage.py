@@ -27,7 +27,9 @@ class StageViewSet(viewsets.ModelViewSet):
 
             serializer = self.get_serializer(stages, many=True)
 
-            return Response(serializer.data)
+            last_order = stages.last().order if stages else 0
+
+            return Response({"stages": serializer.data, "last_order": last_order})
         except Pipeline.DoesNotExist:
             return Response(
                 {"error": "Pipeline not found"},

@@ -12,13 +12,14 @@ interface GithubNodeProps extends NodeProps {
         label: string;
         order: number;
         params: Params;
+        last_order: number;
     };
 }
 
 const GithubNode = (props: GithubNodeProps) => {
     const {
         id,
-        data: { label, order, params },
+        data: { label, order, params, last_order },
     } = props;
 
     const { theme } = useTheme();
@@ -30,6 +31,7 @@ const GithubNode = (props: GithubNodeProps) => {
                 icon={<img src={theme === 'light' ? GithubDark : GithubLight} alt="Github Logo" />}
                 description="Checkout latest changes from Github repository"
                 order={order}
+                last_order={last_order}
                 stageType="VCS"
             >
                 <GithubNodeForm stageID={id} params={params} />

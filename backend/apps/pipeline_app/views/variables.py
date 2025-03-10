@@ -13,6 +13,4 @@ class EnvironmentVariableViewSet(viewsets.ModelViewSet):
     parser_classes = [FormParser, MultiPartParser]
 
     def get_queryset(self):
-        return EnvironmentVariable.objects.selected_related("pipeline").filter(
-            pipeline__user=self.request.user
-        )
+        return EnvironmentVariable.objects.filter(pipeline__user=self.request.user)

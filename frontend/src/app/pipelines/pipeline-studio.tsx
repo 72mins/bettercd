@@ -19,7 +19,7 @@ const PipelineStudio = () => {
         return <div>No data found</div>;
     }
 
-    return <Studio data={data} />;
+    return <Studio last_order={data?.last_order} data={data?.stages} />;
 };
 
 export default PipelineStudio;
