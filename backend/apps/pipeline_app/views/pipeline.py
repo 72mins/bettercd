@@ -22,7 +22,7 @@ class PipelineViewSet(viewsets.ModelViewSet):
     pagination_class = ClassicPagination
 
     def get_queryset(self):
-        return Pipeline.objects.filter(user=self.request.user)
+        return Pipeline.objects.filter(user=self.request.user).order_by("name")
 
 
 class MassPipelineSave(generics.GenericAPIView):
