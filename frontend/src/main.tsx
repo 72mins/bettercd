@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { toast } from 'sonner';
 import axios from 'axios';
+import { NuqsAdapter } from 'nuqs/adapters/react';
 import { ReactFlowProvider } from '@xyflow/react';
 
 import App from './App.tsx';
@@ -29,7 +30,9 @@ createRoot(document.getElementById('root')!).render(
         <QueryClientProvider client={queryClient}>
             <BrowserRouter>
                 <ReactFlowProvider>
-                    <App />
+                    <NuqsAdapter>
+                        <App />
+                    </NuqsAdapter>
                 </ReactFlowProvider>
                 <ReactQueryDevtools buttonPosition="bottom-left" initialIsOpen={false} />
             </BrowserRouter>
