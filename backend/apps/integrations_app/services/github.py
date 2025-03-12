@@ -235,4 +235,3 @@ class GithubClient:
             return None
 
         return response.json()
-
