@@ -28,8 +28,8 @@ const PipelineTable = () => {
     const navigate = useNavigate();
     const navigateToStudio = (id: number) => navigate(`${id}/studio`);
 
-    const [page] = useQueryState('page', parseAsInteger.withDefault(1));
-    const { data } = useFetchPipelines(page);
+    const [page] = useQueryState('page', parseAsInteger.withDefault(1).withOptions({ history: 'replace' }));
+    const { data, isPending } = useFetchPipelines(page);
 
     const { mutate } = useDeletePipeline();
 
@@ -159,6 +159,7 @@ const PipelineTable = () => {
                         title="No pipelines available"
                         description="There are no pipelines to display at the moment."
                         icon={Workflow}
+                        loading={isPending}
                     />
                 )}
             </div>
