@@ -1,26 +1,26 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router';
 
-import { EllipsisVertical, GitCommitHorizontal, Trash2, Workflow } from 'lucide-react';
 import { toast } from 'sonner';
 import { parseAsInteger, useQueryState } from 'nuqs';
+import { EllipsisVertical, GitCommitHorizontal, Trash2, Workflow } from 'lucide-react';
 
-import { Button } from '@/components/ui/button';
 import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { useDeletePipeline, useFetchPipelines } from '@/services/pipelines/pipelines';
 import { Input } from '@/components/ui/input';
-import StatusDot from '@/components/base/status-dot';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import EmptyState from '@/components/base/empty-state';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import PipelineCreate from './create-pipeline';
+import { Button } from '@/components/ui/button';
+import StatusDot from '@/components/base/status-dot';
+import EmptyState from '@/components/base/empty-state';
 import PagePagination from '@/components/base/pagination';
+import { useDeletePipeline, useFetchPipelines } from '@/services/pipelines/pipelines';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 
 const PipelineTable = () => {
     const [open, setOpen] = useState(false);
@@ -28,7 +28,7 @@ const PipelineTable = () => {
     const navigate = useNavigate();
     const navigateToStudio = (id: number) => navigate(`${id}/studio`);
 
-    const [page] = useQueryState('page', parseAsInteger.withDefault(1).withOptions({ history: 'replace' }));
+    const [page, setPage] = useQueryState('page', parseAsInteger.withDefault(1).withOptions({ history: 'replace' }));
     const { data, isPending } = useFetchPipelines(page);
 
     const { mutate } = useDeletePipeline();
@@ -39,6 +39,10 @@ const PipelineTable = () => {
         mutate(id, {
             onSuccess: () => {
                 toast.success('Pipeline deleted successfully');
+
+                if (data?.results?.length === 1 && data?.current_page !== 1) {
+                    setPage(data.current_page - 1);
+                }
             },
         });
     };
