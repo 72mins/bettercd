@@ -14,9 +14,14 @@ interface PipelineResponse extends Pagination {
 }
 
 const fetchPipelines = async (page?: number): Promise<PipelineResponse> => {
-    const res = await axiosInstance.get(`/ci-cd/pipeline/?page=${page}`);
+    try {
+        const res = await axiosInstance.get(`/ci-cd/pipeline/?page=${page}`);
 
-    return res.data;
+        return res.data;
+    } catch (error) {
+        console.log(error);
+        throw new Error('Error fetching pipelines');
+    }
 };
 
 export const useFetchPipelines = (page: number = 1) => {
