@@ -72,6 +72,10 @@ const PagePagination = ({ count, current_page, page_size }: PaginationProps) => 
 
     const range = paginationRange(current_page, pageCount);
 
+    if (pageCount <= 1) {
+        return null;
+    }
+
     return (
         <Pagination className="w-fit float-right py-2">
             <PaginationContent>
