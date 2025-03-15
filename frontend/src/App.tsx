@@ -7,7 +7,7 @@ import { Toaster } from './components/ui/sonner';
 import DashboardPage from './app/dashboard/dashboard';
 import PipelinePage from './app/pipelines/pipelines';
 import PipelineStudio from './app/pipelines/pipeline-studio';
-import IntegrationsPage from './components/integrations';
+import IntegrationsPage from './app/integrations';
 
 function App() {
     return (

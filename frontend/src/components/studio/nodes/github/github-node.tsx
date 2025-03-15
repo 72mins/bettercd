@@ -27,6 +27,7 @@ const GithubNode = (props: GithubNodeProps) => {
     return (
         <>
             <BaseNode
+                id={id}
                 title={label}
                 icon={<img src={theme === 'light' ? GithubDark : GithubLight} alt="Github Logo" />}
                 description="Checkout latest changes from Github repository"
