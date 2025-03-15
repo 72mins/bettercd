@@ -105,3 +105,20 @@ export const useGetScriptValue = (id: number) => {
         enabled: id > 0,
     });
 };
+
+const deleteStage = async (id: number) => {
+    await axiosInstance.delete(`/ci-cd/stage/${id}/`);
+
+    return id;
+};
+
+export const useDeleteStage = () => {
+    const queryClient = useQueryClient();
+
+    return useMutation<number, Error, number>({
+        mutationFn: (id) => deleteStage(id),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['pipeline-stages'] });
+        },
+    });
+};

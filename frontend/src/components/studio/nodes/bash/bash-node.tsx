@@ -38,6 +38,7 @@ const BashNode = (props: BashNodeProps) => {
     return (
         <>
             <BaseNode
+                id={id}
                 title={label}
                 description={description}
                 order={order}
