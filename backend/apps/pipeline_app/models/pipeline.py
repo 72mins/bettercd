@@ -1,12 +1,12 @@
 from django.db import models
 import os
-import uuid
+
+from rest_framework.exceptions import ValidationError
 
 from apps.base_app.models import CustomUser
 
-from apps.docker_app.services.google_job_client import GoogleJobsClient
-from apps.docker_app.services.google_subscriber_client import GoogleSubscriberClient
-from apps.integrations_app.services.github import GithubClient
+from apps.pipeline_app.tasks.run_pipeline import async_run_pipeline
+from django_celery_results.models import TaskResult
 
 SUBSCRIPTION_ID = os.environ.get("GCLOUD_LOG_SUBSCRIPTION_ID")
 
@@ -22,32 +22,25 @@ class Pipeline(models.Model):
     class Meta:
         indexes = [models.Index(fields=["user"])]
 
-    def run_pipeline(self, github_project_id):
-        sub_client = GoogleSubscriberClient(SUBSCRIPTION_ID)
-        job_client = GoogleJobsClient()
-        github_client = GithubClient()
-
-        github_profile = self.user.githubprofile
-
-        repo_details = github_client.get_repo_details(
-            github_profile.access_token, github_project_id
+    @property
+    def running_status(self):
+        target = (
+            "\"{'github_profile_id': "
+            + str(self.user.githubprofile.id)
+            + ", 'pipeline_id': "
+            + str(self.id)
+            + '}"'
         )
 
-        if not repo_details:
-            raise ValueError("Repository not found or access denied.")
+        task = TaskResult.objects.filter(task_kwargs=target).first()
 
-        unique_id = uuid.uuid4()
-        job_name = f"pipeline-job-{self.id}-{unique_id}"
+        if task:
+            return task.status
 
-        variables = self.environmentvariable_set.all()
-        stages = self.stage_set.all().order_by("order")
+    def run_pipeline(self):
+        if self.running_status in ["PENDING", "STARTED"]:
+            raise ValidationError({"error": "Pipeline is already running"})
 
-        try:
-            job_client.create_job(
-                stages, variables, repo_details, job_name, github_profile
-            )
-
-            job_client.run_job(job_name=job_name)
-            sub_client.listen_for_logs(job_name=job_name)
-        finally:
-            job_client.delete_job(job_name=job_name)
+        async_run_pipeline.delay(
+            github_profile_id=self.user.githubprofile.id, pipeline_id=self.id
+        )

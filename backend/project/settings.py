@@ -31,6 +31,7 @@ INSTALLED_APPS = [
     "corsheaders",
     "drf_spectacular",
     "django_env_validator",
+    "django_celery_results",
     # Local
     "apps.base_app",
     "apps.pipeline_app",
@@ -94,6 +95,24 @@ AUTH_PASSWORD_VALIDATORS = [
         "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
 ]
+
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://localhost:6379/1",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        },
+    }
+}
+
+# Celery settings
+CELERY_BROKER_URL = os.getenv("CELERY_BROKER_URL")
+CELERY_RESULT_BACKEND = "django-db"
+CELERY_CACHE_BACKEND = "default"
+CELERY_TASK_TRACK_STARTED = True
+CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
+CELERY_RESULT_EXTENDED = True
 
 SPECTACULAR_SETTINGS = {
     "TITLE": "BetterCD API",

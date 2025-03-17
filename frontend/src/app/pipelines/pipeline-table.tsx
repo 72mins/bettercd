@@ -3,12 +3,13 @@ import { Link, useNavigate } from 'react-router';
 
 import { toast } from 'sonner';
 import { parseAsInteger, useQueryState } from 'nuqs';
-import { EllipsisVertical, GitCommitHorizontal, Trash2, Workflow } from 'lucide-react';
+import { CirclePlay, EllipsisVertical, GitCommitHorizontal, Trash2, Workflow } from 'lucide-react';
 
 import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
+    DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Input } from '@/components/ui/input';
@@ -21,6 +22,7 @@ import { useDeletePipeline, useFetchPipelines } from '@/services/pipelines/pipel
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { useRunPipeline } from '@/services/pipelines/run';
 
 const PipelineTable = () => {
     const [open, setOpen] = useState(false);
@@ -32,6 +34,13 @@ const PipelineTable = () => {
     const { data, isPending } = useFetchPipelines(page);
 
     const { mutate } = useDeletePipeline();
+    const { mutate: runPipeline } = useRunPipeline();
+
+    const handleRun = (e: React.MouseEvent, id: number) => {
+        e.stopPropagation();
+
+        runPipeline(id);
+    };
 
     const handleDelete = (e: React.MouseEvent, id: number) => {
         e.stopPropagation();
@@ -133,6 +142,11 @@ const PipelineTable = () => {
                                                         </Button>
                                                     </DropdownMenuTrigger>
                                                     <DropdownMenuContent className="w-42">
+                                                        <DropdownMenuItem onClick={(e) => handleRun(e, id)}>
+                                                            <CirclePlay className="text-green-500" />
+                                                            Run Pipeline
+                                                        </DropdownMenuItem>
+                                                        <DropdownMenuSeparator />
                                                         <DropdownMenuItem>
                                                             <Workflow />
                                                             <Link to={`${id}/studio`}>Pipeline Studio</Link>
