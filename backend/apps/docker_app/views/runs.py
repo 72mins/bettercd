@@ -17,9 +17,8 @@ class RunPipelineView(generics.CreateAPIView):
 
     def create(self, request, *args, **kwargs):
         pipeline_id = request.data.get("pipeline_id", None)
-        github_project_id = request.data.get("github_project_id", None)
 
-        if not pipeline_id or not github_project_id:
+        if not pipeline_id:
             return Response(
                 {"message": "Pipeline ID and Github Project ID are required."},
                 status=status.HTTP_400_BAD_REQUEST,
@@ -33,6 +32,6 @@ class RunPipelineView(generics.CreateAPIView):
                 status=status.HTTP_404_NOT_FOUND,
             )
 
-        pipeline.run_pipeline(github_project_id)
+        pipeline.run_pipeline()
 
         return Response({"message": "Pipeline run started."}, status=status.HTTP_200_OK)

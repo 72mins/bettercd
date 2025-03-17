@@ -8,7 +8,7 @@ class PipelineSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Pipeline
-        fields = ["id", "name", "description", "user"]
+        fields = ["id", "name", "description", "user", "running_status"]
 
 
 class MassPipelineSaveSerializer(serializers.Serializer):

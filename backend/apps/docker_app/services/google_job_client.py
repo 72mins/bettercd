@@ -39,6 +39,7 @@ class GoogleJobsClient:
         stages: list,
         variables: list,
         repo_details: dict,
+        repo_branch: str,
         job_name: str,
         github_profile,
     ):
@@ -46,7 +47,7 @@ class GoogleJobsClient:
             EnvVar(name="STAGE_COUNT", value=str(len(stages))),
             EnvVar(name="GITHUB_TOKEN", value=github_profile.access_token),
             EnvVar(name="GITHUB_REPO_URL", value=repo_details["clone_url"]),
-            EnvVar(name="GITHUB_REPO_BRANCH", value=repo_details["default_branch"]),
+            EnvVar(name="GITHUB_REPO_BRANCH", value=repo_branch),
         ]
 
         for i, stage in enumerate(stages):
