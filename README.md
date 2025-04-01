@@ -14,6 +14,9 @@ Graphical node-based CI/CD Pipeline Builder. Create and run your CI/CD pipelines
 or running custom functions. Avoid the hassle of self-hosting runners, maintaining environments, dealing
 with yaml config files and other common DevOps headaches.
 
+> [!CAUTION]
+> This project is under heavy development! It is NOT recommended to run this software in production environments yet!
+
 ## Running Locally / Self-Hosting
 
 The project is separated into a frontend and backend directories. The frontend
