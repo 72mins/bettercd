@@ -17,6 +17,12 @@ with yaml config files and other common DevOps headaches.
 > [!CAUTION]
 > This project is under heavy development! It is NOT recommended to run this software in production environments yet!
 
+## Contributing
+
+Contributions are always welcome!
+
+See `CONTRIBUTING.md` for ways to get started. Please adhere to this project's `code of conduct`.
+
 ## Running Locally / Self-Hosting
 
 The project is separated into a frontend and backend directories. The frontend
@@ -198,3 +204,9 @@ celery -A project worker --loglevel=INFO --pool=solo
    ```bash
    bun run dev
    ```
+
+## Support & Feedback
+
+For support or feedback email 72min@proton.me.
+
+For issues, feature requests, bugs, etc.. please open an issue here on GitHub.
