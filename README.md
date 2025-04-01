@@ -1,6 +1,14 @@
+<div align="center">
+
 # BetterCD
 
 ![GitHub License](https://img.shields.io/github/license/72mins/bettercd)
+
+<img alt="BetterCD" width="1000" src="https://bettercd.dev/og.png">
+
+</div>
+
+<br />
 
 Graphical CI/CD Pipeline Builder.
 
