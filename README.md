@@ -10,7 +10,9 @@
 
 <br />
 
-Graphical CI/CD Pipeline Builder.
+Graphical node-based CI/CD Pipeline Builder. Create and run your CI/CD pipelines by adding premade "nodes"
+or running custom functions. Avoid the hassle of self-hosting runners, maintaining environments, dealing
+with yaml config files and other common DevOps headaches.
 
 ## Running Locally / Self-Hosting
 
